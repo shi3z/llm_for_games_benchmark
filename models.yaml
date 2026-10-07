@@ -1,0 +1,209 @@
+# Models under test. Add / remove freely; ids are what --models takes.
+# Quantised variants are separate entries (e.g. qwen3-14b-bf16 / qwen3-14b-awq / qwen3-14b-gguf-q4km).
+#
+# Fields:
+#   backend:        openai | vllm | llamacpp | ollama | mock
+#   base_url:       server URL (OpenAI-style servers: with or without /v1)
+#   model:          model name as the server knows it
+#   params / quantization / family: metadata for the report
+#   revision / tokenizer_revision: recorded for reproducibility
+#   disable_thinking: true -> turn off Qwen3-style reasoning (vllm/llamacpp: chat_template_kwargs, ollama: think=false)
+#   extra_body:     extra JSON merged into OpenAI-style requests
+#   options:        Ollama options (num_ctx, ...)
+#   process_match:  substrings of server process names/cmdlines, for per-process VRAM/RAM measurement
+#   launch:         optional; benchmark starts/stops the server itself (cmd, env, ready_timeout, cooldown)
+#   enabled:        false -> skipped by --models all
+
+models:
+  # ---------------- Ollama ----------------
+  qwen3-8b-q4km:
+    display_name: Qwen3-8B (Q4_K_M, Ollama)
+    backend: ollama
+    base_url: http://localhost:11434
+    model: qwen3:8b
+    params: 8B
+    quantization: Q4_K_M
+    family: qwen3
+    disable_thinking: true
+    options: {num_ctx: 8192}
+    process_match: ["ollama"]
+
+  qwen2.5-7b-q4km:
+    display_name: Qwen2.5-7B-Instruct (Q4_K_M, Ollama)
+    backend: ollama
+    base_url: http://localhost:11434
+    model: qwen2.5:7b
+    params: 7B
+    quantization: Q4_K_M
+    family: qwen2.5
+    options: {num_ctx: 8192}
+    process_match: ["ollama"]
+
+  gemma3-4b-q4km:
+    display_name: Gemma3-4B-it (Q4_K_M, Ollama)
+    backend: ollama
+    base_url: http://localhost:11434
+    model: gemma3:4b
+    params: 4B
+    quantization: Q4_K_M
+    family: gemma3
+    options: {num_ctx: 8192}
+    process_match: ["ollama"]
+
+  # ---------------- vLLM (benchmark starts the server) ----------------
+  qwen3-8b-awq-vllm:
+    display_name: Qwen3-8B (AWQ, vLLM)
+    backend: vllm
+    base_url: http://localhost:8011/v1
+    model: Qwen/Qwen3-8B-AWQ
+    params: 8B
+    quantization: AWQ-INT4
+    family: qwen3
+    disable_thinking: true
+    launch:
+      cmd: .venv-vllm/bin/vllm serve Qwen/Qwen3-8B-AWQ --port 8011 --max-model-len 8192 --gpu-memory-utilization 0.55
+      env: {VLLM_USE_FLASHINFER_SAMPLER: "0"}   # system nvcc 12.0 is too old for FlashInfer's JIT sampler
+      ready_timeout: 900
+    process_match: ["vllm", "VLLM::EngineCore"]
+
+  # ---------------- llama.cpp server ----------------
+  elyza-jp-8b-gguf-q4km:
+    display_name: Llama-3-ELYZA-JP-8B (GGUF Q4_K_M, llama.cpp)
+    backend: llamacpp
+    base_url: http://localhost:8012
+    model: elyza-jp-8b
+    params: 8B
+    quantization: GGUF-Q4_K_M
+    family: llama3-elyza
+    revision: elyza/Llama-3-ELYZA-JP-8B-GGUF:Llama-3-ELYZA-JP-8B-q4_k_m.gguf
+    launch:
+      # ${...} is expanded from the environment (see README)
+      cmd: ${LLAMA_SERVER} -m ${GGUF_ELYZA_8B} --port 8012 -ngl 99 -c 65536 --parallel 16 --jinja --alias elyza-jp-8b
+      ready_timeout: 300
+    process_match: ["llama-server"]
+
+  # ---------------- 14B class / Japanese-tuned candidates ----------------
+  qwen3-14b-bf16:
+    display_name: Qwen3-14B (BF16, vLLM)
+    backend: vllm
+    base_url: http://localhost:8011/v1
+    model: Qwen/Qwen3-14B
+    params: 14B
+    quantization: BF16
+    disable_thinking: true
+    process_match: ["vllm", "VLLM::EngineCore"]
+    enabled: false   # BF16 weights are ~28GB: do not fit a 24GB GPU
+
+  qwen3-14b-fp8:
+    display_name: Qwen3-14B (FP8, vLLM)
+    backend: vllm
+    base_url: http://localhost:8011/v1
+    model: Qwen/Qwen3-14B-FP8
+    params: 14B
+    quantization: FP8
+    family: qwen3
+    disable_thinking: true
+    launch:
+      # 24GB GPU with ~4GB used by other apps: 4096 ctx (longest test prompt ~2.8k tokens).
+      # The checkpoint's fp8 KV cache selects FlashInfer, whose JIT needs a newer nvcc than 12.0 -> force Triton attention.
+      cmd: .venv-vllm/bin/vllm serve Qwen/Qwen3-14B-FP8 --port 8011 --max-model-len 4096 --gpu-memory-utilization 0.79 --attention-backend TRITON_ATTN
+      env: {VLLM_USE_FLASHINFER_SAMPLER: "0"}
+      ready_timeout: 900
+    process_match: ["vllm", "VLLM::EngineCore"]
+
+  qwen3-14b-awq:
+    display_name: Qwen3-14B (AWQ, vLLM)
+    backend: vllm
+    base_url: http://localhost:8011/v1
+    model: Qwen/Qwen3-14B-AWQ
+    params: 14B
+    quantization: AWQ-INT4
+    family: qwen3
+    disable_thinking: true
+    launch:
+      cmd: .venv-vllm/bin/vllm serve Qwen/Qwen3-14B-AWQ --port 8011 --max-model-len 8192 --gpu-memory-utilization 0.6
+      env: {VLLM_USE_FLASHINFER_SAMPLER: "0"}
+      ready_timeout: 900
+    process_match: ["vllm", "VLLM::EngineCore"]
+
+  qwen3-14b-gguf-q4km:
+    display_name: Qwen3-14B (GGUF Q4_K_M, llama.cpp)
+    backend: llamacpp
+    base_url: http://localhost:8012
+    model: qwen3-14b
+    params: 14B
+    quantization: GGUF-Q4_K_M
+    family: qwen3
+    revision: Qwen/Qwen3-14B-GGUF:Qwen3-14B-Q4_K_M.gguf
+    disable_thinking: true
+    launch:
+      # q8_0 KV cache so that 64k context (16 slots x 4k) fits next to the 9GB weights
+      cmd: ${LLAMA_SERVER} -m ${GGUF_QWEN3_14B} --port 8012 -ngl 99 -c 65536 --parallel 16 -fa on -ctk q8_0 -ctv q8_0 --jinja --alias qwen3-14b
+      ready_timeout: 300
+    process_match: ["llama-server"]
+
+  shisa-v2-qwen2.5-7b:
+    display_name: Shisa V2 Qwen2.5-7B (BF16, vLLM)
+    backend: vllm
+    base_url: http://localhost:8011/v1
+    model: shisa-ai/shisa-v2-qwen2.5-7b
+    params: 7B
+    quantization: BF16
+    family: shisa-v2
+    launch:
+      cmd: .venv-vllm/bin/vllm serve shisa-ai/shisa-v2-qwen2.5-7b --port 8011 --max-model-len 8192 --gpu-memory-utilization 0.8
+      env: {VLLM_USE_FLASHINFER_SAMPLER: "0"}
+      ready_timeout: 900
+    process_match: ["vllm", "VLLM::EngineCore"]
+
+  elyza-llama3-jp-8b:
+    display_name: Llama-3-ELYZA-JP-8B (BF16, vLLM)
+    backend: vllm
+    base_url: http://localhost:8011/v1
+    model: elyza/Llama-3-ELYZA-JP-8B
+    params: 8B
+    quantization: BF16
+    family: llama3-elyza
+    launch:
+      cmd: .venv-vllm/bin/vllm serve elyza/Llama-3-ELYZA-JP-8B --port 8011 --max-model-len 8192 --gpu-memory-utilization 0.8
+      env: {VLLM_USE_FLASHINFER_SAMPLER: "0"}
+      ready_timeout: 900
+    process_match: ["vllm", "VLLM::EngineCore"]
+
+  qwen3.8-9b-distill-gguf-q4km:
+    display_name: Qwen3.8-9B-Distill (GGUF Q4_K_M, llama.cpp)
+    backend: llamacpp
+    base_url: http://localhost:8012
+    model: qwen3.8-9b-distill
+    params: 9.2B
+    quantization: GGUF-Q4_K_M
+    family: qwen35
+    # Ollama registry: tobestyledintro/qwen3.8-9b-distill (needs Ollama >= 0.32.12, so the GGUF blob is served by llama.cpp)
+    # upstream file: Qwen3.8-9B-Distill-uncensored-heretic; blob sha256 below
+    revision: sha256:df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a
+    disable_thinking: true
+    launch:
+      cmd: ${LLAMA_SERVER} -m ${HOME}/models/qwen3.8-9b-distill/Qwen3.8-9B-Distill.gguf --port 8012 -ngl 99 -c 65536 --parallel 16 --jinja --alias qwen3.8-9b-distill
+      ready_timeout: 300
+    process_match: ["llama-server"]
+
+  # ---------------- examples (disabled) ----------------
+  any-openai-compatible:
+    display_name: Some model behind an OpenAI-compatible API
+    backend: openai
+    base_url: http://localhost:8000/v1
+    model: my-model
+    api_key_env: OPENAI_API_KEY
+    params: 12B
+    quantization: unknown
+    enabled: false
+
+  mock-fast:
+    display_name: Mock (pipeline test)
+    backend: mock
+    model: mock-fast
+    params: "-"
+    quantization: "-"
+    mock_ttft_ms: 80
+    mock_tok_per_s: 120
+    enabled: false

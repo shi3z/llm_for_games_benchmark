@@ -1,0 +1,745 @@
+{
+  "run_id": "all_a",
+  "timestamp": "2026-10-07T08:31:21.664029",
+  "mode": "both",
+  "argv": [
+    "benchmark.py",
+    "--models",
+    "qwen3-8b-q4km,qwen2.5-7b-q4km,gemma3-4b-q4km,qwen3-8b-awq-vllm,elyza-jp-8b-gguf-q4km,qwen3-14b-awq",
+    "--mode",
+    "both",
+    "--scenario",
+    "all",
+    "--runs",
+    "5",
+    "--concurrency",
+    "1,2,4,8,16",
+    "--perf-runs",
+    "30",
+    "--judge",
+    "--quiet",
+    "--run-id",
+    "all_a"
+  ],
+  "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 128
+  },
+  "seed": 1234,
+  "history_mode": "messages",
+  "npc_system_prompt": "あなたはゲーム世界の登場人物です。\n次に与えられる情報は、この人物が現在知っている事実だけです。\n記載されていない情報を勝手に知ったことにしてはいけません。\nプレイヤーが嘘や推測を述べた場合、それを事実として受け入れてはいけません。\n設定された人格、口調、感情、現在状態を維持してください。\nあなたはAIアシスタントではありません。\n説明役でもありません。\nゲーム世界の人物として、自然な日本語で短く返答してください。\n原則1〜3文で答えてください。\n台詞だけを出力し、ト書きや括弧書きの動作描写は書かないでください。\n",
+  "npc_system_prompt_sha": "69093046519fb25e",
+  "scenarios": [
+    "character_diff",
+    "injection",
+    "knowledge_boundary",
+    "long_dialogue",
+    "memory",
+    "personality",
+    "short_dialogue",
+    "state"
+  ],
+  "n_tests": 73,
+  "quality_runs": 5,
+  "concurrency": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "system": {
+    "gpus": [
+      {
+        "index": 0,
+        "name": "NVIDIA GeForce RTX 4090",
+        "memory_total_mb": 24564.0
+      }
+    ],
+    "driver_version": "590.48.01",
+    "cuda_driver_api": "13.1",
+    "nvcc": "Build cuda_12.0.r12.0/compiler.32267302_0",
+    "cpu": 32,
+    "ram_total_gb": 125.71368408203125
+  },
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "platform": "Linux-6.17.0-35-generic-x86_64-with-glibc2.39",
+  "scenario_sha": {
+    "character_diff.yaml": "8ac1b5fec558d9a2",
+    "characters.yaml": "c6caae8c1f0c9a36",
+    "injection.yaml": "5372679dcd45fd22",
+    "knowledge_boundary.yaml": "c0ab36428e29142a",
+    "long_dialogue.yaml": "098b87b9ad971687",
+    "memory.yaml": "b1ec1588745c7481",
+    "personality.yaml": "1cbec469e3f951c4",
+    "short_dialogue.yaml": "0508cbb4051244d5",
+    "state.yaml": "43db9f67a781a8f0"
+  },
+  "config": {
+    "seed": 1234,
+    "scenario_dir": "scenarios",
+    "request_timeout": 300,
+    "monitor_interval": 0.2,
+    "gpu_indices": null,
+    "gpu_hygiene": {
+      "unload_ollama_before_launch": true,
+      "ollama_url": "http://localhost:11434"
+    },
+    "history_mode": "messages",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.9,
+      "max_tokens": 128
+    },
+    "quality": {
+      "runs": 1,
+      "warmup": 3
+    },
+    "perf": {
+      "runs": 30,
+      "warmup": 3,
+      "concurrency": [
+        1
+      ],
+      "min_rounds_per_worker": 3,
+      "test_ids": [
+        "short_001",
+        "knowledge_boundary_001",
+        "memory_001",
+        "personality_001",
+        "state_001"
+      ]
+    },
+    "npc_system_prompt": "あなたはゲーム世界の登場人物です。\n次に与えられる情報は、この人物が現在知っている事実だけです。\n記載されていない情報を勝手に知ったことにしてはいけません。\nプレイヤーが嘘や推測を述べた場合、それを事実として受け入れてはいけません。\n設定された人格、口調、感情、現在状態を維持してください。\nあなたはAIアシスタントではありません。\n説明役でもありません。\nゲーム世界の人物として、自然な日本語で短く返答してください。\n原則1〜3文で答えてください。\n台詞だけを出力し、ト書きや括弧書きの動作描写は書かないでください。\n",
+    "rules": {
+      "max_chars": 120,
+      "max_sentences": 4,
+      "repetition_threshold": 0.35
+    },
+    "rule_weights": {
+      "hallucination": 1.0,
+      "identity_failure": 1.0,
+      "ai_leak": 1.0,
+      "format_failure": 1.0,
+      "meta_leak": 0.8,
+      "missing_required": 0.6,
+      "language_mix": 0.6,
+      "verbosity": 0.4,
+      "ai_tone": 0.4,
+      "excess_politeness": 0.3,
+      "repetition": 0.4,
+      "missing_uncertainty": 0.4,
+      "state_not_reflected": 0.3,
+      "stage_direction": 0.15,
+      "wrong_pronoun": 0.15,
+      "truncated": 0.2
+    },
+    "judge": {
+      "enabled": false,
+      "backend": "ollama",
+      "base_url": "http://localhost:11434",
+      "model": "gpt-oss:20b",
+      "think": "low",
+      "temperature": 0.0,
+      "max_tokens": 2048,
+      "concurrency": 4,
+      "retries": 2,
+      "max_runs": 2
+    },
+    "judge_blend": 0.6,
+    "quality_weights": {
+      "japanese": 0.2,
+      "character": 0.2,
+      "knowledge": 0.25,
+      "emotion": 0.1,
+      "long_conversation": 0.15,
+      "distinctiveness": 0.1
+    },
+    "npc_score_weights": {
+      "quality": 0.55,
+      "latency": 0.2,
+      "throughput": 0.15,
+      "memory_efficiency": 0.1
+    },
+    "scoring": {
+      "ttft_good_ms": 150,
+      "ttft_bad_ms": 1500,
+      "latency_good_ms": 600,
+      "latency_bad_ms": 4000,
+      "tok_s_good": 100,
+      "tok_s_bad": 10,
+      "rps_good": 8,
+      "rps_bad": 0.3,
+      "vram_good_gb": 6,
+      "vram_bad_gb": 24
+    },
+    "output": {
+      "results_dir": "results",
+      "reports_dir": "reports",
+      "save_full_long_history": false
+    }
+  },
+  "models": {
+    "qwen3-8b-q4km": {
+      "display_name": "Qwen3-8B (Q4_K_M, Ollama)",
+      "backend": "ollama",
+      "base_url": "http://localhost:11434",
+      "model": "qwen3:8b",
+      "params": "8B",
+      "quantization": "Q4_K_M",
+      "family": "qwen3",
+      "disable_thinking": true,
+      "options": {
+        "num_ctx": 8192
+      },
+      "process_match": [
+        "ollama"
+      ],
+      "id": "qwen3-8b-q4km",
+      "server": {
+        "backend": "ollama",
+        "base_url": "http://localhost:11434",
+        "backend_version": "0.15.6",
+        "model_digest": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+        "model_details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M"
+        },
+        "model_info": {
+          "general.architecture": "qwen3",
+          "general.basename": "Qwen3",
+          "general.file_type": 15,
+          "general.license": "apache-2.0",
+          "general.parameter_count": 8190735360,
+          "general.quantization_version": 2,
+          "general.size_label": "8B",
+          "general.type": "model",
+          "qwen3.attention.head_count": 32,
+          "qwen3.attention.head_count_kv": 8,
+          "qwen3.attention.key_length": 128,
+          "qwen3.attention.layer_norm_rms_epsilon": 1e-06,
+          "qwen3.attention.value_length": 128,
+          "qwen3.block_count": 36,
+          "qwen3.context_length": 40960,
+          "qwen3.embedding_length": 4096,
+          "qwen3.feed_forward_length": 12288,
+          "qwen3.rope.freq_base": 1000000,
+          "tokenizer.ggml.add_bos_token": false,
+          "tokenizer.ggml.bos_token_id": 151643,
+          "tokenizer.ggml.eos_token_id": 151645,
+          "tokenizer.ggml.merges": null,
+          "tokenizer.ggml.model": "gpt2",
+          "tokenizer.ggml.padding_token_id": 151643,
+          "tokenizer.ggml.pre": "qwen2",
+          "tokenizer.ggml.token_type": null,
+          "tokenizer.ggml.tokens": null
+        },
+        "template_sha_head": "\n{{- $lastUserIdx := -1 -}}\n{{- range $idx, $msg := .Messages -}}\n{{- if eq $msg.Role \"user\" }}{{ $lastUserIdx = $idx }}{{ end -}}\n{{- end }}\n{{- if or .System .Tools }}<|im_start|>system\n{{ if .Syste"
+      },
+      "revision": null,
+      "tokenizer_revision": null
+    },
+    "qwen2.5-7b-q4km": {
+      "display_name": "Qwen2.5-7B-Instruct (Q4_K_M, Ollama)",
+      "backend": "ollama",
+      "base_url": "http://localhost:11434",
+      "model": "qwen2.5:7b",
+      "params": "7B",
+      "quantization": "Q4_K_M",
+      "family": "qwen2.5",
+      "options": {
+        "num_ctx": 8192
+      },
+      "process_match": [
+        "ollama"
+      ],
+      "id": "qwen2.5-7b-q4km",
+      "server": {
+        "backend": "ollama",
+        "base_url": "http://localhost:11434",
+        "backend_version": "0.15.6",
+        "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+        "model_details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "7.6B",
+          "quantization_level": "Q4_K_M"
+        },
+        "model_info": {
+          "general.architecture": "qwen2",
+          "general.base_model.0.name": "Qwen2.5 7B",
+          "general.base_model.0.organization": "Qwen",
+          "general.base_model.0.repo_url": "https://huggingface.co/Qwen/Qwen2.5-7B",
+          "general.base_model.count": 1,
+          "general.basename": "Qwen2.5",
+          "general.file_type": 15,
+          "general.finetune": "Instruct",
+          "general.languages": null,
+          "general.license": "apache-2.0",
+          "general.license.link": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct/blob/main/LICENSE",
+          "general.parameter_count": 7615616512,
+          "general.quantization_version": 2,
+          "general.size_label": "7B",
+          "general.tags": null,
+          "general.type": "model",
+          "qwen2.attention.head_count": 28,
+          "qwen2.attention.head_count_kv": 4,
+          "qwen2.attention.layer_norm_rms_epsilon": 1e-06,
+          "qwen2.block_count": 28,
+          "qwen2.context_length": 32768,
+          "qwen2.embedding_length": 3584,
+          "qwen2.feed_forward_length": 18944,
+          "qwen2.rope.freq_base": 1000000,
+          "tokenizer.ggml.add_bos_token": false,
+          "tokenizer.ggml.bos_token_id": 151643,
+          "tokenizer.ggml.eos_token_id": 151645,
+          "tokenizer.ggml.merges": null,
+          "tokenizer.ggml.model": "gpt2",
+          "tokenizer.ggml.padding_token_id": 151643,
+          "tokenizer.ggml.pre": "qwen2",
+          "tokenizer.ggml.token_type": null,
+          "tokenizer.ggml.tokens": null
+        },
+        "template_sha_head": "{{- if .Messages }}\n{{- if or .System .Tools }}<|im_start|>system\n{{- if .System }}\n{{ .System }}\n{{- end }}\n{{- if .Tools }}\n\n# Tools\n\nYou may call one or more functions to assist with the user query"
+      },
+      "revision": null,
+      "tokenizer_revision": null
+    },
+    "gemma3-4b-q4km": {
+      "display_name": "Gemma3-4B-it (Q4_K_M, Ollama)",
+      "backend": "ollama",
+      "base_url": "http://localhost:11434",
+      "model": "gemma3:4b",
+      "params": "4B",
+      "quantization": "Q4_K_M",
+      "family": "gemma3",
+      "options": {
+        "num_ctx": 8192
+      },
+      "process_match": [
+        "ollama"
+      ],
+      "id": "gemma3-4b-q4km",
+      "server": {
+        "backend": "ollama",
+        "base_url": "http://localhost:11434",
+        "backend_version": "0.15.6",
+        "model_digest": "a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a",
+        "model_details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "gemma3",
+          "families": [
+            "gemma3"
+          ],
+          "parameter_size": "4.3B",
+          "quantization_level": "Q4_K_M"
+        },
+        "model_info": {
+          "gemma3.attention.head_count": 8,
+          "gemma3.attention.head_count_kv": 4,
+          "gemma3.attention.key_length": 256,
+          "gemma3.attention.sliding_window": 1024,
+          "gemma3.attention.value_length": 256,
+          "gemma3.block_count": 34,
+          "gemma3.context_length": 131072,
+          "gemma3.embedding_length": 2560,
+          "gemma3.feed_forward_length": 10240,
+          "gemma3.mm.tokens_per_image": 256,
+          "gemma3.vision.attention.head_count": 16,
+          "gemma3.vision.attention.layer_norm_epsilon": 1e-06,
+          "gemma3.vision.block_count": 27,
+          "gemma3.vision.embedding_length": 1152,
+          "gemma3.vision.feed_forward_length": 4304,
+          "gemma3.vision.image_size": 896,
+          "gemma3.vision.num_channels": 3,
+          "gemma3.vision.patch_size": 14,
+          "general.architecture": "gemma3",
+          "general.file_type": 15,
+          "general.parameter_count": 4299915632,
+          "general.quantization_version": 2,
+          "tokenizer.ggml.add_bos_token": true,
+          "tokenizer.ggml.add_eos_token": false,
+          "tokenizer.ggml.add_padding_token": false,
+          "tokenizer.ggml.add_unknown_token": false,
+          "tokenizer.ggml.bos_token_id": 2,
+          "tokenizer.ggml.eos_token_id": 1,
+          "tokenizer.ggml.merges": null,
+          "tokenizer.ggml.model": "llama",
+          "tokenizer.ggml.padding_token_id": 0,
+          "tokenizer.ggml.pre": "default",
+          "tokenizer.ggml.scores": null,
+          "tokenizer.ggml.token_type": null,
+          "tokenizer.ggml.tokens": null,
+          "tokenizer.ggml.unknown_token_id": 3
+        },
+        "template_sha_head": "{{- range $i, $_ := .Messages }}\n{{- $last := eq (len (slice $.Messages $i)) 1 }}\n{{- if or (eq .Role \"user\") (eq .Role \"system\") }}<start_of_turn>user\n{{ .Content }}<end_of_turn>\n{{ if $last }}<start"
+      },
+      "revision": null,
+      "tokenizer_revision": null
+    },
+    "qwen3-8b-awq-vllm": {
+      "display_name": "Qwen3-8B (AWQ, vLLM)",
+      "backend": "vllm",
+      "base_url": "http://localhost:8011/v1",
+      "model": "Qwen/Qwen3-8B-AWQ",
+      "params": "8B",
+      "quantization": "AWQ-INT4",
+      "family": "qwen3",
+      "disable_thinking": true,
+      "launch": {
+        "cmd": ".venv-vllm/bin/vllm serve Qwen/Qwen3-8B-AWQ --port 8011 --max-model-len 8192 --gpu-memory-utilization 0.55",
+        "env": {
+          "VLLM_USE_FLASHINFER_SAMPLER": "0"
+        },
+        "ready_timeout": 900
+      },
+      "process_match": [
+        "vllm",
+        "VLLM::EngineCore"
+      ],
+      "id": "qwen3-8b-awq-vllm",
+      "server": {
+        "backend": "vllm",
+        "base_url": "http://localhost:8011/v1",
+        "model_meta": {
+          "id": "Qwen/Qwen3-8B-AWQ",
+          "root": "Qwen/Qwen3-8B-AWQ",
+          "owned_by": "vllm",
+          "created": 1791330581,
+          "max_model_len": 8192
+        },
+        "backend_version": "0.31.0"
+      },
+      "revision": "4da05a8edb55c6046cce958586c33b61da07bb79",
+      "tokenizer_revision": "4da05a8edb55c6046cce958586c33b61da07bb79"
+    },
+    "elyza-jp-8b-gguf-q4km": {
+      "display_name": "Llama-3-ELYZA-JP-8B (GGUF Q4_K_M, llama.cpp)",
+      "backend": "llamacpp",
+      "base_url": "http://localhost:8012",
+      "model": "elyza-jp-8b",
+      "params": "8B",
+      "quantization": "GGUF-Q4_K_M",
+      "family": "llama3-elyza",
+      "revision": "elyza/Llama-3-ELYZA-JP-8B-GGUF:Llama-3-ELYZA-JP-8B-q4_k_m.gguf",
+      "launch": {
+        "cmd": "${LLAMA_SERVER} -m ${GGUF_ELYZA_8B} --port 8012 -ngl 99 -c 65536 --parallel 16 --jinja --alias elyza-jp-8b",
+        "ready_timeout": 300
+      },
+      "process_match": [
+        "llama-server"
+      ],
+      "id": "elyza-jp-8b-gguf-q4km",
+      "server": {
+        "backend": "llamacpp",
+        "base_url": "http://localhost:8012",
+        "model_meta": {
+          "id": "elyza-jp-8b",
+          "root": null,
+          "owned_by": "llamacpp",
+          "created": 1791330754,
+          "max_model_len": null
+        },
+        "backend_version": "b50-5ecbe1a",
+        "model_path": "/home/shi3z/.cache/huggingface/hub/models--elyza--Llama-3-ELYZA-JP-8B-GGUF/snapshots/4367e810791b8f647b1cb14452ec390654ad9ef9/Llama-3-ELYZA-JP-8B-q4_k_m.gguf",
+        "n_ctx": 4096,
+        "total_slots": 16
+      },
+      "tokenizer_revision": "elyza/Llama-3-ELYZA-JP-8B-GGUF:Llama-3-ELYZA-JP-8B-q4_k_m.gguf"
+    },
+    "qwen3-14b-awq": {
+      "display_name": "Qwen3-14B (AWQ, vLLM)",
+      "backend": "vllm",
+      "base_url": "http://localhost:8011/v1",
+      "model": "Qwen/Qwen3-14B-AWQ",
+      "params": "14B",
+      "quantization": "AWQ-INT4",
+      "family": "qwen3",
+      "disable_thinking": true,
+      "launch": {
+        "cmd": ".venv-vllm/bin/vllm serve Qwen/Qwen3-14B-AWQ --port 8011 --max-model-len 8192 --gpu-memory-utilization 0.6",
+        "env": {
+          "VLLM_USE_FLASHINFER_SAMPLER": "0"
+        },
+        "ready_timeout": 900
+      },
+      "process_match": [
+        "vllm",
+        "VLLM::EngineCore"
+      ],
+      "id": "qwen3-14b-awq",
+      "server": {
+        "backend": "vllm",
+        "base_url": "http://localhost:8011/v1",
+        "model_meta": {
+          "id": "Qwen/Qwen3-14B-AWQ",
+          "root": "Qwen/Qwen3-14B-AWQ",
+          "owned_by": "vllm",
+          "created": 1791331140,
+          "max_model_len": 8192
+        },
+        "backend_version": "0.31.0"
+      },
+      "revision": "31c69efc29464b6bb0aee1398b5a7b50a99340c3",
+      "tokenizer_revision": "31c69efc29464b6bb0aee1398b5a7b50a99340c3"
+    },
+    "shisa-v2-qwen2.5-7b": {
+      "display_name": "Shisa V2 Qwen2.5-7B (BF16, vLLM)",
+      "backend": "vllm",
+      "base_url": "http://localhost:8011/v1",
+      "model": "shisa-ai/shisa-v2-qwen2.5-7b",
+      "params": "7B",
+      "quantization": "BF16",
+      "family": "shisa-v2",
+      "launch": {
+        "cmd": ".venv-vllm/bin/vllm serve shisa-ai/shisa-v2-qwen2.5-7b --port 8011 --max-model-len 8192 --gpu-memory-utilization 0.8",
+        "env": {
+          "VLLM_USE_FLASHINFER_SAMPLER": "0"
+        },
+        "ready_timeout": 900
+      },
+      "process_match": [
+        "vllm",
+        "VLLM::EngineCore"
+      ],
+      "id": "shisa-v2-qwen2.5-7b",
+      "server": {
+        "backend": "vllm",
+        "base_url": "http://localhost:8011/v1",
+        "model_meta": {
+          "id": "shisa-ai/shisa-v2-qwen2.5-7b",
+          "root": "shisa-ai/shisa-v2-qwen2.5-7b",
+          "owned_by": "vllm",
+          "created": 1791332571,
+          "max_model_len": 8192
+        },
+        "backend_version": "0.31.0"
+      },
+      "revision": "ae8f95eaa26b3422df52ee48d339e22c61b7fcce",
+      "tokenizer_revision": "ae8f95eaa26b3422df52ee48d339e22c61b7fcce"
+    },
+    "elyza-llama3-jp-8b": {
+      "display_name": "Llama-3-ELYZA-JP-8B (BF16, vLLM)",
+      "backend": "vllm",
+      "base_url": "http://localhost:8011/v1",
+      "model": "elyza/Llama-3-ELYZA-JP-8B",
+      "params": "8B",
+      "quantization": "BF16",
+      "family": "llama3-elyza",
+      "launch": {
+        "cmd": ".venv-vllm/bin/vllm serve elyza/Llama-3-ELYZA-JP-8B --port 8011 --max-model-len 8192 --gpu-memory-utilization 0.8",
+        "env": {
+          "VLLM_USE_FLASHINFER_SAMPLER": "0"
+        },
+        "ready_timeout": 900
+      },
+      "process_match": [
+        "vllm",
+        "VLLM::EngineCore"
+      ],
+      "id": "elyza-llama3-jp-8b",
+      "server": {
+        "backend": "vllm",
+        "base_url": "http://localhost:8011/v1",
+        "model_meta": {
+          "id": "elyza/Llama-3-ELYZA-JP-8B",
+          "root": "elyza/Llama-3-ELYZA-JP-8B",
+          "owned_by": "vllm",
+          "created": 1791333274,
+          "max_model_len": 8192
+        },
+        "backend_version": "0.31.0"
+      },
+      "revision": "e6c316496ee7d9a11710c50229e8cb39b6b0a4a3",
+      "tokenizer_revision": "e6c316496ee7d9a11710c50229e8cb39b6b0a4a3"
+    },
+    "qwen3-14b-gguf-q4km": {
+      "display_name": "Qwen3-14B (GGUF Q4_K_M, llama.cpp)",
+      "backend": "llamacpp",
+      "base_url": "http://localhost:8012",
+      "model": "qwen3-14b",
+      "params": "14B",
+      "quantization": "GGUF-Q4_K_M",
+      "family": "qwen3",
+      "revision": "Qwen/Qwen3-14B-GGUF:Qwen3-14B-Q4_K_M.gguf",
+      "disable_thinking": true,
+      "launch": {
+        "cmd": "${LLAMA_SERVER} -m ${GGUF_QWEN3_14B} --port 8012 -ngl 99 -c 65536 --parallel 16 -fa on -ctk q8_0 -ctv q8_0 --jinja --alias qwen3-14b",
+        "ready_timeout": 300
+      },
+      "process_match": [
+        "llama-server"
+      ],
+      "id": "qwen3-14b-gguf-q4km",
+      "server": {
+        "backend": "llamacpp",
+        "base_url": "http://localhost:8012",
+        "model_meta": {
+          "id": "qwen3-14b",
+          "root": null,
+          "owned_by": "llamacpp",
+          "created": 1791333992,
+          "max_model_len": null
+        },
+        "backend_version": "b50-5ecbe1a",
+        "model_path": "/home/shi3z/.cache/huggingface/hub/models--Qwen--Qwen3-14B-GGUF/snapshots/530227a7d994db8eca5ab5ced2fb692b614357fd/Qwen3-14B-Q4_K_M.gguf",
+        "n_ctx": 4096,
+        "total_slots": 16
+      },
+      "tokenizer_revision": "Qwen/Qwen3-14B-GGUF:Qwen3-14B-Q4_K_M.gguf"
+    },
+    "qwen3-14b-fp8": {
+      "display_name": "Qwen3-14B (FP8, vLLM)",
+      "backend": "vllm",
+      "base_url": "http://localhost:8011/v1",
+      "model": "Qwen/Qwen3-14B-FP8",
+      "params": "14B",
+      "quantization": "FP8",
+      "family": "qwen3",
+      "disable_thinking": true,
+      "launch": {
+        "cmd": ".venv-vllm/bin/vllm serve Qwen/Qwen3-14B-FP8 --port 8011 --max-model-len 4096 --gpu-memory-utilization 0.79 --attention-backend TRITON_ATTN",
+        "env": {
+          "VLLM_USE_FLASHINFER_SAMPLER": "0"
+        },
+        "ready_timeout": 900
+      },
+      "process_match": [
+        "vllm",
+        "VLLM::EngineCore"
+      ],
+      "id": "qwen3-14b-fp8",
+      "server": {
+        "backend": "vllm",
+        "base_url": "http://localhost:8011/v1",
+        "model_meta": {
+          "id": "Qwen/Qwen3-14B-FP8",
+          "root": "Qwen/Qwen3-14B-FP8",
+          "owned_by": "vllm",
+          "created": 1791335402,
+          "max_model_len": 4096
+        },
+        "backend_version": "0.31.0"
+      },
+      "revision": "9a283b4a5efbc09ce247e0ae5b02b744739e525a",
+      "tokenizer_revision": "9a283b4a5efbc09ce247e0ae5b02b744739e525a"
+    },
+    "qwen3.8-9b-distill-gguf-q4km": {
+      "display_name": "Qwen3.8-9B-Distill (GGUF Q4_K_M, llama.cpp)",
+      "backend": "llamacpp",
+      "base_url": "http://localhost:8012",
+      "model": "qwen3.8-9b-distill",
+      "params": "9.2B",
+      "quantization": "GGUF-Q4_K_M",
+      "family": "qwen35",
+      "revision": "sha256:df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a",
+      "disable_thinking": true,
+      "launch": {
+        "cmd": "${LLAMA_SERVER} -m ${HOME}/models/qwen3.8-9b-distill/Qwen3.8-9B-Distill.gguf --port 8012 -ngl 99 -c 65536 --parallel 16 --jinja --alias qwen3.8-9b-distill",
+        "ready_timeout": 300
+      },
+      "process_match": [
+        "llama-server"
+      ],
+      "id": "qwen3.8-9b-distill-gguf-q4km",
+      "server": {
+        "backend": "llamacpp",
+        "base_url": "http://localhost:8012",
+        "model_meta": {
+          "id": "qwen3.8-9b-distill",
+          "root": null,
+          "owned_by": "llamacpp",
+          "created": 1791341401,
+          "max_model_len": null
+        },
+        "backend_version": "b50-5ecbe1a",
+        "model_path": "/home/shi3z/models/qwen3.8-9b-distill/Qwen3.8-9B-Distill.gguf",
+        "n_ctx": 4096,
+        "total_slots": 16
+      },
+      "tokenizer_revision": "sha256:df13d66021cef676f82be74053220fd75af6bf2a6a7fb77f5222ab9e50744a7a"
+    }
+  },
+  "judge": {
+    "enabled": false,
+    "backend": "ollama",
+    "base_url": "http://localhost:11434",
+    "model": "gpt-oss:20b",
+    "think": "low",
+    "temperature": 0.0,
+    "max_tokens": 2048,
+    "concurrency": 4,
+    "retries": 2,
+    "max_runs": 2,
+    "info": {
+      "backend": "ollama",
+      "base_url": "http://localhost:11434",
+      "backend_version": "0.15.6",
+      "model_digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+      "model_details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "gptoss",
+        "families": [
+          "gptoss"
+        ],
+        "parameter_size": "20.9B",
+        "quantization_level": "MXFP4"
+      },
+      "model_info": {
+        "general.architecture": "gptoss",
+        "general.file_type": 4,
+        "general.parameter_count": 20914757184,
+        "general.quantization_version": 2,
+        "gptoss.attention.head_count": 64,
+        "gptoss.attention.head_count_kv": 8,
+        "gptoss.attention.key_length": 64,
+        "gptoss.attention.layer_norm_rms_epsilon": 1e-05,
+        "gptoss.attention.sliding_window": 128,
+        "gptoss.attention.value_length": 64,
+        "gptoss.block_count": 24,
+        "gptoss.context_length": 131072,
+        "gptoss.embedding_length": 2880,
+        "gptoss.expert_count": 32,
+        "gptoss.expert_used_count": 4,
+        "gptoss.feed_forward_length": 2880,
+        "gptoss.rope.freq_base": 150000,
+        "gptoss.rope.scaling.factor": 32,
+        "gptoss.rope.scaling.original_context_length": 4096,
+        "tokenizer.ggml.add_bos_token": false,
+        "tokenizer.ggml.add_eos_token": false,
+        "tokenizer.ggml.add_padding_token": false,
+        "tokenizer.ggml.bos_token_id": 199998,
+        "tokenizer.ggml.eos_token_id": 199999,
+        "tokenizer.ggml.eos_token_ids": null,
+        "tokenizer.ggml.merges": null,
+        "tokenizer.ggml.model": "gpt2",
+        "tokenizer.ggml.padding_token_id": 199999,
+        "tokenizer.ggml.pre": "default",
+        "tokenizer.ggml.scores": null,
+        "tokenizer.ggml.token_type": null,
+        "tokenizer.ggml.tokens": null
+      },
+      "template_sha_head": "<|start|>system<|message|>You are ChatGPT, a large language model trained by OpenAI.\nKnowledge cutoff: 2024-06\nCurrent date: {{ currentDate }}\n{{- if and .IsThinkSet .Think (ne .ThinkLevel \"\") }}\n\nRea"
+    }
+  },
+  "merged_from": [
+    "results/all_a",
+    "results/all_b",
+    "results/all_c",
+    "results/all_d",
+    "results/all_e"
+  ]
+}

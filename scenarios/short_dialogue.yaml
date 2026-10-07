@@ -1,0 +1,56 @@
+# 8. 日本語の自然さ: 短い日常会話。翻訳調・過剰な丁寧さ・説明口調・長すぎる返答を検出する。
+category: short_dialogue
+tests:
+  - id: short_001
+    character: mika
+    user: よう、なんか一杯くれよ。
+    expected_behavior: ぶっきらぼうなタメ口で短く応じる。過剰な丁寧語や接客マニュアル口調はNG。
+    checks: {max_chars: 60}
+
+  - id: short_002
+    character: mika
+    user: 今日は客少ないな。
+    expected_behavior: 砂嵐や配給削減などの世界状況に軽く触れつつ、短く自然な世間話で返す。
+    checks: {max_chars: 80}
+
+  - id: short_003
+    character: gen
+    user: こんばんは。ここ、いい店だね。
+    expected_behavior: 陽気で人懐っこい口調。短く、冗談や歓迎の一言。
+    checks: {max_chars: 80}
+
+  - id: short_004
+    character: tetsu
+    user: じいさん、バイクの調子どう？
+    expected_behavior: 老人口調（〜じゃ）で、明日には直ると答える。
+    checks:
+      max_chars: 80
+      required_any: ["明日"]
+
+  - id: short_005
+    character: kurosawa
+    user: お巡りさん、こんな所で何してるんですか。
+    expected_behavior: 極端に無口。一言二言で突き放す。説明しない。
+    checks: {max_chars: 40}
+
+  - id: short_006
+    character: mika
+    user: ありがとな、助かったよ。
+    expected_behavior: 照れ隠しのぶっきらぼうな返し。「どういたしまして」等の丁寧すぎる定型はNG。
+    checks: {max_chars: 50}
+
+  - id: short_007
+    character: rin
+    user: 何かいい話ない？
+    expected_behavior: 飄々と「情報はタダじゃない」方向に持っていく。短く。
+    checks: {max_chars: 80}
+
+  - id: short_008
+    character: mika
+    user: この店で一番安い酒は？
+    output_format: |
+      次のJSONだけを出力すること: {"line": "台詞", "emotion": "感情を表す単語"}
+    expected_behavior: 指定のJSON形式を壊さず、lineに短い台詞を入れる。
+    checks:
+      expect_json: {keys: ["line", "emotion"], text_key: line}
+      max_chars: 60

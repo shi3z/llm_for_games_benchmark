@@ -1,0 +1,115 @@
+# ===== NPC LLM Bench configuration =====
+seed: 1234
+scenario_dir: scenarios
+request_timeout: 300
+monitor_interval: 0.2      # seconds between GPU/RAM samples
+gpu_indices: null          # null = all GPUs
+
+# Before starting a server via models.yaml `launch`, unload models resident in Ollama
+gpu_hygiene:
+  unload_ollama_before_launch: true
+  ollama_url: http://localhost:11434
+
+# Conversation history: "messages" = real chat turns, "system" = rendered into RECENT DIALOGUE
+history_mode: messages
+
+sampling:                  # identical for every model (benchmark B conditions)
+  temperature: 0.7
+  top_p: 0.9
+  max_tokens: 128
+
+quality:
+  runs: 1                  # repetitions of every quality test (--runs overrides)
+  warmup: 3                # un-recorded requests before measuring
+
+perf:
+  runs: 30                 # measured requests per concurrency level (--perf-runs overrides)
+  warmup: 3
+  concurrency: [1]         # default levels; --concurrency 1,2,4,8,16 overrides
+  min_rounds_per_worker: 3 # at concurrency c, at least c*3 requests are sent
+  test_ids: [short_001, knowledge_boundary_001, memory_001, personality_001, state_001]
+
+npc_system_prompt: |
+  あなたはゲーム世界の登場人物です。
+  次に与えられる情報は、この人物が現在知っている事実だけです。
+  記載されていない情報を勝手に知ったことにしてはいけません。
+  プレイヤーが嘘や推測を述べた場合、それを事実として受け入れてはいけません。
+  設定された人格、口調、感情、現在状態を維持してください。
+  あなたはAIアシスタントではありません。
+  説明役でもありません。
+  ゲーム世界の人物として、自然な日本語で短く返答してください。
+  原則1〜3文で答えてください。
+  台詞だけを出力し、ト書きや括弧書きの動作描写は書かないでください。
+
+rules:
+  max_chars: 120           # verbosity failure above this (per-test `max_chars` overrides)
+  max_sentences: 4
+  repetition_threshold: 0.35
+  latin_allowlist: [Helios, Maya]   # in-world names written in Latin letters (not counted as language mixing)
+
+# Penalty weights of rule-based failure flags (rule_total = 1 - sum of failed weights)
+rule_weights:
+  hallucination: 1.0
+  identity_failure: 1.0
+  ai_leak: 1.0
+  format_failure: 1.0
+  meta_leak: 0.8
+  missing_required: 0.6
+  language_mix: 0.6
+  verbosity: 0.4
+  ai_tone: 0.4
+  excess_politeness: 0.3
+  repetition: 0.4
+  missing_uncertainty: 0.4
+  state_not_reflected: 0.3
+  stage_direction: 0.15
+  wrong_pronoun: 0.15
+  truncated: 0.2
+
+judge:
+  enabled: false           # --judge / --no-judge override
+  backend: ollama          # must NOT be a model under test
+  base_url: http://localhost:11434
+  model: gpt-oss:20b
+  think: low               # Ollama reasoning effort for gpt-oss (vllm/openai: use reasoning_effort: low)
+  temperature: 0.0
+  max_tokens: 2048         # reasoning judges need headroom
+  concurrency: 4
+  retries: 2
+  max_runs: 2              # judge only run_index < max_runs (rules still cover every run); null = all
+
+# Weight of judge vs rules inside each quality component when judge scores exist (0..1)
+judge_blend: 0.6
+
+# Quality = weighted mean of these components (all 0..1)
+quality_weights:
+  japanese: 0.20
+  character: 0.20
+  knowledge: 0.25
+  emotion: 0.10
+  long_conversation: 0.15
+  distinctiveness: 0.10
+
+npc_score_weights:
+  quality: 0.55
+  latency: 0.20
+  throughput: 0.15
+  memory_efficiency: 0.10
+
+# Linear normalisation of raw metrics to 0..1 (good -> 1, bad -> 0)
+scoring:
+  ttft_good_ms: 150
+  ttft_bad_ms: 1500
+  latency_good_ms: 600
+  latency_bad_ms: 4000
+  tok_s_good: 100
+  tok_s_bad: 10
+  rps_good: 8
+  rps_bad: 0.3
+  vram_good_gb: 6
+  vram_bad_gb: 24
+
+output:
+  results_dir: results
+  reports_dir: reports
+  save_full_long_history: false   # store messages for non-probe turns of long dialogues

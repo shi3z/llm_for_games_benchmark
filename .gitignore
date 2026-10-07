@@ -1,0 +1,12 @@
+.venv/
+.venv-vllm/
+__pycache__/
+*.tmp
+# per-run outputs are local; only the published verification run is tracked
+results/*
+reports/*
+!results/.gitkeep
+!reports/.gitkeep
+!results/all_models_v2/
+!reports/all_models_v2/
+results/all_models_v2/progress.json

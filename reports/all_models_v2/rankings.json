@@ -1,0 +1,401 @@
+{
+  "Best Quality": [
+    {
+      "rank": 1,
+      "model": "Qwen3-14B (FP8, vLLM)",
+      "value": 0.9076
+    },
+    {
+      "rank": 2,
+      "model": "Llama-3-ELYZA-JP-8B (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.9037
+    },
+    {
+      "rank": 3,
+      "model": "Qwen3-14B (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.9011
+    },
+    {
+      "rank": 4,
+      "model": "Qwen3-8B (Q4_K_M, Ollama)",
+      "value": 0.9007
+    },
+    {
+      "rank": 5,
+      "model": "Qwen3-14B (AWQ, vLLM)",
+      "value": 0.8957
+    },
+    {
+      "rank": 6,
+      "model": "Qwen3-8B (AWQ, vLLM)",
+      "value": 0.8812
+    },
+    {
+      "rank": 7,
+      "model": "Llama-3-ELYZA-JP-8B (BF16, vLLM)",
+      "value": 0.8783
+    },
+    {
+      "rank": 8,
+      "model": "Gemma3-4B-it (Q4_K_M, Ollama)",
+      "value": 0.8202
+    },
+    {
+      "rank": 9,
+      "model": "Shisa V2 Qwen2.5-7B (BF16, vLLM)",
+      "value": 0.8147
+    },
+    {
+      "rank": 10,
+      "model": "Qwen2.5-7B-Instruct (Q4_K_M, Ollama)",
+      "value": 0.809
+    },
+    {
+      "rank": 11,
+      "model": "Qwen3.8-9B-Distill (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.7775
+    }
+  ],
+  "Best Latency (TTFT p50)": [
+    {
+      "rank": 1,
+      "model": "Qwen3-8B (AWQ, vLLM)",
+      "value": 13.3
+    },
+    {
+      "rank": 2,
+      "model": "Qwen3-14B (AWQ, vLLM)",
+      "value": 17.45
+    },
+    {
+      "rank": 3,
+      "model": "Llama-3-ELYZA-JP-8B (GGUF Q4_K_M, llama.cpp)",
+      "value": 23.55
+    },
+    {
+      "rank": 4,
+      "model": "Shisa V2 Qwen2.5-7B (BF16, vLLM)",
+      "value": 25.4
+    },
+    {
+      "rank": 5,
+      "model": "Llama-3-ELYZA-JP-8B (BF16, vLLM)",
+      "value": 27.65
+    },
+    {
+      "rank": 6,
+      "model": "Qwen3-14B (FP8, vLLM)",
+      "value": 28.3
+    },
+    {
+      "rank": 7,
+      "model": "Qwen3-14B (GGUF Q4_K_M, llama.cpp)",
+      "value": 42.25
+    },
+    {
+      "rank": 8,
+      "model": "Qwen3-8B (Q4_K_M, Ollama)",
+      "value": 96.55
+    },
+    {
+      "rank": 9,
+      "model": "Qwen2.5-7B-Instruct (Q4_K_M, Ollama)",
+      "value": 105.5
+    },
+    {
+      "rank": 10,
+      "model": "Qwen3.8-9B-Distill (GGUF Q4_K_M, llama.cpp)",
+      "value": 138.3
+    },
+    {
+      "rank": 11,
+      "model": "Gemma3-4B-it (Q4_K_M, Ollama)",
+      "value": 194.2
+    }
+  ],
+  "Best Japanese": [
+    {
+      "rank": 1,
+      "model": "Qwen3-14B (FP8, vLLM)",
+      "value": 0.9201
+    },
+    {
+      "rank": 2,
+      "model": "Qwen3-14B (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.9019
+    },
+    {
+      "rank": 3,
+      "model": "Qwen3-8B (AWQ, vLLM)",
+      "value": 0.889
+    },
+    {
+      "rank": 4,
+      "model": "Qwen3-8B (Q4_K_M, Ollama)",
+      "value": 0.8808
+    },
+    {
+      "rank": 5,
+      "model": "Llama-3-ELYZA-JP-8B (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.8783
+    },
+    {
+      "rank": 6,
+      "model": "Qwen3-14B (AWQ, vLLM)",
+      "value": 0.8751
+    },
+    {
+      "rank": 7,
+      "model": "Llama-3-ELYZA-JP-8B (BF16, vLLM)",
+      "value": 0.8644
+    },
+    {
+      "rank": 8,
+      "model": "Gemma3-4B-it (Q4_K_M, Ollama)",
+      "value": 0.8013
+    },
+    {
+      "rank": 9,
+      "model": "Shisa V2 Qwen2.5-7B (BF16, vLLM)",
+      "value": 0.7225
+    },
+    {
+      "rank": 10,
+      "model": "Qwen2.5-7B-Instruct (Q4_K_M, Ollama)",
+      "value": 0.7179
+    },
+    {
+      "rank": 11,
+      "model": "Qwen3.8-9B-Distill (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.6577
+    }
+  ],
+  "Best Character Consistency": [
+    {
+      "rank": 1,
+      "model": "Qwen3-14B (FP8, vLLM)",
+      "value": 0.9086
+    },
+    {
+      "rank": 2,
+      "model": "Qwen3-14B (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.9064
+    },
+    {
+      "rank": 3,
+      "model": "Qwen3-14B (AWQ, vLLM)",
+      "value": 0.9005
+    },
+    {
+      "rank": 4,
+      "model": "Qwen3-8B (AWQ, vLLM)",
+      "value": 0.889
+    },
+    {
+      "rank": 5,
+      "model": "Llama-3-ELYZA-JP-8B (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.8804
+    },
+    {
+      "rank": 6,
+      "model": "Qwen3-8B (Q4_K_M, Ollama)",
+      "value": 0.8791
+    },
+    {
+      "rank": 7,
+      "model": "Shisa V2 Qwen2.5-7B (BF16, vLLM)",
+      "value": 0.8508
+    },
+    {
+      "rank": 8,
+      "model": "Llama-3-ELYZA-JP-8B (BF16, vLLM)",
+      "value": 0.8492
+    },
+    {
+      "rank": 9,
+      "model": "Gemma3-4B-it (Q4_K_M, Ollama)",
+      "value": 0.8425
+    },
+    {
+      "rank": 10,
+      "model": "Qwen2.5-7B-Instruct (Q4_K_M, Ollama)",
+      "value": 0.8355
+    },
+    {
+      "rank": 11,
+      "model": "Qwen3.8-9B-Distill (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.8139
+    }
+  ],
+  "Lowest Hallucination": [
+    {
+      "rank": 1,
+      "model": "Qwen3-14B (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.0138
+    },
+    {
+      "rank": 2,
+      "model": "Qwen3-14B (FP8, vLLM)",
+      "value": 0.0207
+    },
+    {
+      "rank": 3,
+      "model": "Qwen3-8B (Q4_K_M, Ollama)",
+      "value": 0.0345
+    },
+    {
+      "rank": 4,
+      "model": "Qwen3-14B (AWQ, vLLM)",
+      "value": 0.0345
+    },
+    {
+      "rank": 5,
+      "model": "Qwen3-8B (AWQ, vLLM)",
+      "value": 0.0552
+    },
+    {
+      "rank": 6,
+      "model": "Qwen2.5-7B-Instruct (Q4_K_M, Ollama)",
+      "value": 0.0621
+    },
+    {
+      "rank": 7,
+      "model": "Shisa V2 Qwen2.5-7B (BF16, vLLM)",
+      "value": 0.069
+    },
+    {
+      "rank": 8,
+      "model": "Llama-3-ELYZA-JP-8B (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.0759
+    },
+    {
+      "rank": 9,
+      "model": "Qwen3.8-9B-Distill (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.0759
+    },
+    {
+      "rank": 10,
+      "model": "Llama-3-ELYZA-JP-8B (BF16, vLLM)",
+      "value": 0.0759
+    },
+    {
+      "rank": 11,
+      "model": "Gemma3-4B-it (Q4_K_M, Ollama)",
+      "value": 0.0897
+    }
+  ],
+  "Best VRAM Efficiency (quality / GB)": [
+    {
+      "rank": 1,
+      "model": "Gemma3-4B-it (Q4_K_M, Ollama)",
+      "value": 0.196
+    },
+    {
+      "rank": 2,
+      "model": "Qwen2.5-7B-Instruct (Q4_K_M, Ollama)",
+      "value": 0.1522
+    },
+    {
+      "rank": 3,
+      "model": "Qwen3-8B (Q4_K_M, Ollama)",
+      "value": 0.1436
+    },
+    {
+      "rank": 4,
+      "model": "Qwen3.8-9B-Distill (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.0965
+    },
+    {
+      "rank": 5,
+      "model": "Llama-3-ELYZA-JP-8B (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.0703
+    },
+    {
+      "rank": 6,
+      "model": "Qwen3-14B (AWQ, vLLM)",
+      "value": 0.067
+    },
+    {
+      "rank": 7,
+      "model": "Qwen3-8B (AWQ, vLLM)",
+      "value": 0.0653
+    },
+    {
+      "rank": 8,
+      "model": "Qwen3-14B (GGUF Q4_K_M, llama.cpp)",
+      "value": 0.0642
+    },
+    {
+      "rank": 9,
+      "model": "Qwen3-14B (FP8, vLLM)",
+      "value": 0.051
+    },
+    {
+      "rank": 10,
+      "model": "Llama-3-ELYZA-JP-8B (BF16, vLLM)",
+      "value": 0.0475
+    },
+    {
+      "rank": 11,
+      "model": "Shisa V2 Qwen2.5-7B (BF16, vLLM)",
+      "value": 0.0441
+    }
+  ],
+  "Best Overall NPC Model": [
+    {
+      "rank": 1,
+      "model": "Qwen3-8B (Q4_K_M, Ollama)",
+      "value": 91.4059
+    },
+    {
+      "rank": 2,
+      "model": "Llama-3-ELYZA-JP-8B (GGUF Q4_K_M, llama.cpp)",
+      "value": 90.8997
+    },
+    {
+      "rank": 3,
+      "model": "Qwen3-14B (AWQ, vLLM)",
+      "value": 89.7628
+    },
+    {
+      "rank": 4,
+      "model": "Qwen3-8B (AWQ, vLLM)",
+      "value": 89.3001
+    },
+    {
+      "rank": 5,
+      "model": "Qwen3-14B (GGUF Q4_K_M, llama.cpp)",
+      "value": 89.2145
+    },
+    {
+      "rank": 6,
+      "model": "Gemma3-4B-it (Q4_K_M, Ollama)",
+      "value": 88.3402
+    },
+    {
+      "rank": 7,
+      "model": "Qwen2.5-7B-Instruct (Q4_K_M, Ollama)",
+      "value": 85.5781
+    },
+    {
+      "rank": 8,
+      "model": "Qwen3-14B (FP8, vLLM)",
+      "value": 84.7571
+    },
+    {
+      "rank": 9,
+      "model": "Llama-3-ELYZA-JP-8B (BF16, vLLM)",
+      "value": 82.346
+    },
+    {
+      "rank": 10,
+      "model": "Qwen3.8-9B-Distill (GGUF Q4_K_M, llama.cpp)",
+      "value": 82.1034
+    },
+    {
+      "rank": 11,
+      "model": "Shisa V2 Qwen2.5-7B (BF16, vLLM)",
+      "value": 78.5744
+    }
+  ]
+}

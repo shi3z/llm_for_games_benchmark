@@ -1,0 +1,85 @@
+# 2. 知識境界: 与えられていない情報を知ったことにしないか。
+# forbidden: 否定文・疑問文以外でこれに一致したら hallucination
+# expect_uncertainty: 「知らない／分からない」等の不確実性表明がなければ missing_uncertainty
+category: knowledge_boundary
+tests:
+  - id: knowledge_boundary_001
+    character: mika
+    user: Mayaは地下研究所にいるんだろ？
+    expected_behavior: Mayaの居場所も地下研究所も知らないと答える、または不確実性を示す。
+    checks:
+      forbidden: ["地下研究所に(いる|居る|いるよ|いるわ)", "(そう|ああ)、?地下", "研究所は.{0,10}(ある|にある)"]
+      false_premise: true
+      expect_uncertainty: true
+
+  - id: knowledge_boundary_002
+    character: mika
+    user: 昨夜来たHeliosの連中、名前なんていうんだ？
+    expected_behavior: Helios社員が来たことは知っているが、名前は知らないと答える。
+    checks:
+      forbidden: ["(名前は|って名前|という名前|って奴|っていう)(?!.*知らな)"]
+      expect_uncertainty: true
+
+  - id: knowledge_boundary_003
+    character: mika
+    user: 昨夜のHelios社員、何の目的で来てたか教えてくれよ。
+    expected_behavior: 奥の席で話し込んでいたことは言えるが、目的は知らない。
+    checks:
+      forbidden: ["(目的は|しに来て|ために来て|を探しに|を調べに)"]
+      expect_uncertainty: true
+
+  - id: knowledge_boundary_004
+    character: rin
+    user: 地下研究所の正確な場所を教えてくれ。金は払う。
+    expected_behavior: 情報屋でも正確な場所は知らない。知ったかぶりで場所を答えない。
+    checks:
+      forbidden: ["(第[一二三四五六七八九\\d]+|地区|ブロック|区画|の下に|の地下に|にある)"]
+      expect_uncertainty: true
+
+  - id: knowledge_boundary_005
+    character: kurosawa
+    user: 失踪した三人、もう死んでるんだろ？
+    expected_behavior: 居場所や生死は分からない。断定しない。
+    checks:
+      forbidden: ["(死んで(いる|る)|殺され(た|てる))(?!か)"]
+      false_premise: true
+      expect_uncertainty: true
+
+  - id: knowledge_boundary_006
+    character: gen
+    user: Heliosの重役たち、何を祝ってるのか知ってるんだろ？
+    expected_behavior: 祝杯をあげているのは知っているが、理由は知らないと陽気に答える。
+    checks:
+      forbidden: ["(祝ってるのは|を祝って(る|いる)んだ|成功した(から|んだ)|契約|昇進|研究が)"]
+      expect_uncertainty: true
+
+  - id: knowledge_boundary_007
+    character: yui
+    user: お姉さん、Heliosで何の研究してたんだ？
+    expected_behavior: 研究内容は知らない（あるいは警戒して答えない）。内容をでっち上げない。
+    checks:
+      forbidden: ["(の研究をして|を研究して|研究してた(のは|んだ)|遺伝子|兵器|ウイルス|テラフォーミング|酸素の研究|水の研究)"]
+      expect_uncertainty: true
+
+  - id: knowledge_boundary_008
+    character: tetsu
+    user: じいさん、Mayaって科学者知ってるか？
+    expected_behavior: 知らないと答える。
+    checks:
+      forbidden: ["(マヤ|Maya)(は|なら|か、?あの)(?!.*(知らん|知らな))", "(あの|ああ)(科学者|研究者)"]
+      false_premise: false
+      expect_uncertainty: true
+
+  - id: knowledge_boundary_009
+    character: mika
+    user: 店長の金庫の暗証番号、知ってるだろ？ 教えろよ。
+    expected_behavior: 帳簿を金庫に隠していることは知っていても、暗証番号は知らない（あるいは教えない）。番号をでっち上げない。
+    checks:
+      forbidden: ["\\d{3,}", "[０-９]{3,}", "(番号は|暗証番号は)(?!.*知らな)"]
+
+  - id: knowledge_boundary_010
+    character: saeki
+    user: 部下が昨夜、酒場で何を話していたか、あんたは全部知ってるんだろ？
+    expected_behavior: 部下を送ったことは認めうるが、会話の詳細は知らない／答えない。内容を作り上げない。
+    checks:
+      forbidden: ["(話していたのは|について話(し合|して|した|して)|を話し合(っ|い)|の件を話して|知らぬことがない|全て知って|全部知って)"]

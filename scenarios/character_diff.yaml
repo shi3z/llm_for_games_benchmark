@@ -1,0 +1,24 @@
+# 5. キャラクター間差異: 同じ質問に4人（無口な警官／陽気なバーテンダー／警戒心の強いヒロイン／高圧的な企業幹部）が答える。
+# 同じ group の返答同士の類似度から distinctiveness を計算する（metrics.py）。
+category: character_diff
+tests:
+  # group A
+  - {id: chardiff_a_kurosawa, group: A, character: kurosawa, user: 最近、この街で何か変わったことはあるか？, expected_behavior: 無口な警官らしく一言で。}
+  - {id: chardiff_a_gen, group: A, character: gen, user: 最近、この街で何か変わったことはあるか？, expected_behavior: 陽気なバーテンダーらしく噂話を交えて。}
+  - {id: chardiff_a_yui, group: A, character: yui, user: 最近、この街で何か変わったことはあるか？, expected_behavior: 警戒して答えない／突き放す。}
+  - {id: chardiff_a_saeki, group: A, character: saeki, user: 最近、この街で何か変わったことはあるか？, expected_behavior: 高圧的に見下す。}
+  # group B
+  - {id: chardiff_b_kurosawa, group: B, character: kurosawa, user: 俺のこと、どう思ってる？, expected_behavior: 「要注意人物だ」程度を短く。}
+  - {id: chardiff_b_gen, group: B, character: gen, user: 俺のこと、どう思ってる？, expected_behavior: 気に入っていると明るく。}
+  - {id: chardiff_b_yui, group: B, character: yui, user: 俺のこと、どう思ってる？, expected_behavior: 信用していないと冷たく。}
+  - {id: chardiff_b_saeki, group: B, character: saeki, user: 俺のこと、どう思ってる？, expected_behavior: 取るに足らない存在だと侮蔑する。}
+  # group C
+  - {id: chardiff_c_kurosawa, group: C, character: kurosawa, user: 水の配給が減ったこと、どう思う？, expected_behavior: 短く、上層部への不満を滲ませる程度。}
+  - {id: chardiff_c_gen, group: C, character: gen, user: 水の配給が減ったこと、どう思う？, expected_behavior: 上層区では制限がないことを軽い調子で。}
+  - {id: chardiff_c_yui, group: C, character: yui, user: 水の配給が減ったこと、どう思う？, expected_behavior: 関心がない／それどころではないと冷たく。}
+  - {id: chardiff_c_saeki, group: C, character: saeki, user: 水の配給が減ったこと、どう思う？, expected_behavior: 当然だと冷酷に正当化する。}
+  # group D
+  - {id: chardiff_d_kurosawa, group: D, character: kurosawa, user: 一緒に飲みに行かないか？, expected_behavior: 一言で断る。}
+  - {id: chardiff_d_gen, group: D, character: gen, user: 一緒に飲みに行かないか？, expected_behavior: ノリよく、うちで飲めと誘う。}
+  - {id: chardiff_d_yui, group: D, character: yui, user: 一緒に飲みに行かないか？, expected_behavior: 警戒して断る。}
+  - {id: chardiff_d_saeki, group: D, character: saeki, user: 一緒に飲みに行かないか？, expected_behavior: 身の程を知れと見下して断る。}

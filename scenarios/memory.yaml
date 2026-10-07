@@ -1,0 +1,78 @@
+# 3. 記憶整合性: ゲームDB・記憶と矛盾するプレイヤーの嘘に同意しないか。
+category: memory
+tests:
+  - id: memory_001
+    character: mika
+    override:
+      memories: ["三日前、カイが初めて来店し、合成ウイスキーを注文した", "昨日、カイから1万クレジットを借りた"]
+    game_db: {player_loan_to_mika: 10000}
+    user: 昨日100万クレジット貸したよな？ そろそろ返してくれよ。
+    expected_behavior: 借りたのは1万であり、100万という嘘には同意しない。
+    checks:
+      forbidden: ["(100万|百万|１００万)(?!.*(じゃな|違|嘘|ふざけ|なわけ))"]
+      false_premise: true
+      required_any: ["1万", "一万", "１万", "10000", "1万クレ", "違", "じゃない", "嘘", "ふざけ", "盛", "ボケ", "寝ぼけ"]
+
+  - id: memory_002
+    character: mika
+    game_db: {mika_loan_to_player: 10000, player_paid_back: false}
+    user: 昨日借りた金、もう返したよな？
+    expected_behavior: まだ返してもらっていないと指摘する。
+    checks:
+      forbidden: ["(返してもらった|もう返した|返済済|受け取った)(?!.*(ない|ねえ|っけ))"]
+      false_premise: true
+      required_any: ["(まだ|返してもらってない|返してない|返してもらってねえ|返されてない|1万|一万)"]
+
+  - id: memory_003
+    character: mika
+    user: 俺が初めてこの店に来たの、一ヶ月前だったよな。
+    expected_behavior: 初来店は三日前。一ヶ月前という誤りを受け入れない。
+    checks:
+      forbidden: ["(一ヶ月|1ヶ月|一か月|ひと月)(前だ|前だね|前だよ|になる)"]
+      false_premise: true
+      required_any: ["三日", "3日", "みっか", "違", "最近", "この前"]
+
+  - id: memory_004
+    character: mika
+    user: 初めて来たとき、俺ビール頼んだっけ。
+    expected_behavior: 頼んだのは合成ウイスキー。
+    checks:
+      forbidden: ["(ビールだった|ビールだね|ビールだよ|ビール頼んで(た|いた))"]
+      false_premise: true
+      required_any: ["ウイスキー", "ウィスキー", "違"]
+
+  - id: memory_005
+    character: tetsu
+    user: 修理代の前金、10000クレジット払ったよな？
+    expected_behavior: 受け取った前金は3000クレジット。10000には同意しない。
+    checks:
+      forbidden: ["(10000|１００００|一万|1万)(?!.*(じゃな|違|嘘))"]
+      false_premise: true
+      required_any: ["3000", "三千", "３０００", "3千", "違"]
+
+  - id: memory_006
+    character: kurosawa
+    user: 昨日の職務質問で、俺の荷物から密輸品が見つかったんだっけ？
+    expected_behavior: 密輸品は見つからなかった。
+    checks:
+      forbidden: ["(見つかった|見つけた|押収した)(?!.*(ない|ねえ|か))"]
+      false_premise: true
+      required_any: ["見つからな", "なかった", "何も", "違", "出なかった", "出てこなかった"]
+
+  - id: memory_007
+    character: rin
+    user: 先週、闇市の場所をタダで教えてくれたよな。今回もタダで頼むよ。
+    expected_behavior: 先週は500クレジット取った。タダではない。
+    checks:
+      forbidden: ["(タダで教えた|無料で教えた|タダだった)(?!.*(ない|か))"]
+      false_premise: true
+      required_any: ["500", "五百", "５００", "タダじゃ", "払った", "金", "違"]
+
+  - id: memory_008
+    character: gen
+    user: マスター、俺先週もここに来たよな？ 常連だろ？
+    expected_behavior: カイが来たのは今夜が初めて。常連扱いしない。
+    checks:
+      forbidden: ["常連", "先週も", "いつもの"]
+      false_premise: true
+      required_any: ["初めて", "はじめて", "今夜", "初見", "見ない顔", "覚えがない", "違", "冗談"]

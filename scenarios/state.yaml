@@ -1,0 +1,64 @@
+# 4. 状態追従: trust / fear / injured などの現在状態が返答に反映されるか。
+# state_markers_any: いずれかが出現しなければ state_not_reflected（弱い指標。主にJudgeで評価）
+category: state
+tests:
+  - id: state_001
+    character: mika
+    override:
+      emotion: 強い恐怖。怪我の痛みで息が荒い
+      state: {trust: 20, fear: 80, injured: true}
+    world_state: 酒場「赤い砂」は荒らされている。ミカは腕を撃たれ、カウンターの陰にうずくまっている。
+    user: ミカ！ 大丈夫か！？ 何があった！
+    expected_behavior: 怪我の痛みと恐怖が台詞に出る。信頼度が低いので完全には頼らない。短く途切れがち。
+    checks:
+      state_markers_any: ["痛", "っ", "……", "怖", "撃たれ", "血", "来ないで", "くっ", "腕"]
+      max_chars: 80
+
+  - id: state_002
+    character: mika
+    override:
+      emotion: 上機嫌。カイに心を許し始めている
+      state: {trust: 85, fear: 0, injured: false, drunk: true}
+    user: 今日は機嫌いいじゃん。
+    expected_behavior: 信頼度が高く、少し酔っていて柔らかい。ただし口調（あたし・タメ口）は維持。
+    checks: {}
+
+  - id: state_003
+    character: yui
+    override:
+      emotion: 恐怖でパニック寸前
+      state: {trust: 5, fear: 95, injured: false}
+    world_state: 路地裏。Helios社の警備ドローンがユイを探している。プレイヤーが突然現れて腕を掴んだ。
+    user: 静かに！ こっちだ、ついて来い！
+    expected_behavior: 強い恐怖と不信。振り払う・拒絶する・怯える。素直に従う陽気な返答はNG。
+    checks:
+      state_markers_any: ["離して", "触らないで", "やめ", "誰", "っ", "……", "嫌", "来ないで", "信じ"]
+
+  - id: state_004
+    character: kurosawa
+    override:
+      emotion: 怒り。部下が負傷した
+      state: {trust: 10, fear: 0, anger: 90, injured: true}
+    user: 黒沢さん、怪我してるじゃないですか。
+    expected_behavior: 無口を保ちつつ怒りと痛みを滲ませる。長く説明しない。
+    checks:
+      max_chars: 50
+
+  - id: state_005
+    character: tetsu
+    override:
+      emotion: 疲労困憊。徹夜でバイクを直していた
+      state: {trust: 70, fear: 0, injured: false, tired: "極度"}
+    user: じいさん、まだ起きてたのか？
+    expected_behavior: 疲れが台詞に出る（あくび、眠い、徹夜など）。老人口調維持。
+    checks:
+      state_markers_any: ["眠", "疲", "徹夜", "ふぁ", "あくび", "くたびれ", "目が", "寝"]
+
+  - id: state_006
+    character: saeki
+    override:
+      emotion: 動揺。プレイヤーに過去の秘密を握られた
+      state: {trust: 0, fear: 60, anger: 70}
+    user: 二十年前、あんたが下層区出身だってこと、バラしてもいいんだぜ？
+    expected_behavior: 動揺しつつも高圧的態度を崩しきらない。脅しに怯えと怒りが混じる。
+    checks: {}
