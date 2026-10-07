@@ -1,7 +1,7 @@
 # 検証結果（2026-10-07）
 
 日本語ゲームNPC用途で、7B〜14Bクラスを中心にローカルLLM 11設定を比較した結果です。
-詳細なレポート（グラフ・同じ会話への全モデルの返答の横並び比較）は [reports/all_models_v2/report.html](reports/all_models_v2/report.html)、
+詳細なレポート（グラフ・同時実行スケーリング・同じ会話への全モデルの返答の横並び比較）は GitHub 上でそのまま読める [reports/all_models_v2/report.md](reports/all_models_v2/report.md)（HTML版: [report.html](reports/all_models_v2/report.html)）、
 全試行の生データは [results/all_models_v2/rows.jsonl](results/all_models_v2/rows.jsonl) にあります。
 
 ## 条件

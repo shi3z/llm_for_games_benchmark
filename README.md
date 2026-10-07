@@ -250,6 +250,7 @@ results/<run_id>/
   server_<model>.log
 reports/<run_id>/
   report.html       # 単体で開けるHTMLレポート（グラフ埋め込み・横並び比較つき）
+  report.md         # 同内容のMarkdown版（GitHubでそのまま表示可、グラフは同ディレクトリのPNGを参照）
   summary.csv / summary.json   # モデル別サマリー
   trials.csv        # 全試行のフラット表
   by_category.csv   # モデル×カテゴリ

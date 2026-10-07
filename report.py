@@ -282,6 +282,76 @@ def comparison_html(rows: list[dict[str, Any]], names: dict[str, str], limit_run
     return "\n".join(out)
 
 
+def _md_cell(v: Any) -> str:
+    return str(v).replace("|", "\\|").replace("\r", "").replace("\n", "<br>")
+
+
+def _md_table(header: list[str], rows: list[list[Any]]) -> str:
+    out = ["| " + " | ".join(header) + " |", "|" + "|".join("---" for _ in header) + "|"]
+    out += ["| " + " | ".join(_md_cell(c) for c in r) + " |" for r in rows]
+    return "\n".join(out)
+
+
+def summary_md(s: pd.DataFrame) -> str:
+    rows = []
+    for _, r in s.sort_values("npc_score", ascending=False, na_position="last").iterrows():
+        cells = []
+        for col, _, scale in SUMMARY_COLS:
+            v = r.get(col)
+            if scale and isinstance(v, (int, float)) and v == v:
+                cells.append(f"{v * scale:.1f}" if scale == 100 else f"{v:.1f}")
+            else:
+                cells.append(html.unescape(_fmt(v)))
+        rows.append(cells)
+    return _md_table([h for _, h, _ in SUMMARY_COLS], rows)
+
+
+def category_md(cat: pd.DataFrame, names: dict[str, str]) -> str:
+    if cat.empty:
+        return "(no data)"
+    piv = cat.pivot_table(index="model", columns="category", values="rule_total")
+    cols = list(piv.columns)
+    rows = [[names.get(m, m)] + [_fmt(piv.loc[m, c] * 100) for c in cols] for m in piv.index]
+    return _md_table(["Model"] + cols, rows)
+
+
+def concurrency_md(perf: pd.DataFrame, names: dict[str, str]) -> str:
+    if perf.empty:
+        return "(no data)"
+    rows = [[names.get(r["model"], r["model"]), int(r["concurrency"]), _fmt(r["requests_per_sec"], 2),
+             _fmt(r["agg_tokens_per_sec"]), _fmt(r["ttft_ms_p50"]), _fmt(r["ttft_ms_p95"]),
+             _fmt(r["latency_ms_p50"]), _fmt(r["latency_ms_p95"]), int(r["errors"])]
+            for _, r in perf.sort_values(["model", "concurrency"]).iterrows()]
+    return _md_table(["Model", "同時実行", "req/s", "agg tok/s", "TTFT p50", "TTFT p95", "Lat p50", "Lat p95", "errors"], rows)
+
+
+def comparison_md(rows: list[dict[str, Any]], names: dict[str, str], limit_runs: int = 1) -> str:
+    """Markdown version of comparison_html: one collapsible block per test."""
+    q = [r for r in rows if r.get("phase") == "quality" and r.get("run_index", 0) < limit_runs and r.get("is_probe", True)]
+    models = list(dict.fromkeys(r["model"] for r in q))
+    by_test: dict[str, dict[str, dict]] = {}
+    for r in q:
+        by_test.setdefault(r["test_id"], {})[r["model"]] = r
+    out = []
+    for tid, per in by_test.items():
+        any_r = next(iter(per.values()))
+        convo = "\n".join(f"> **{'P' if m['role'] == 'user' else 'NPC'}:** {_md_cell(m['content'])}  "
+                          for m in (any_r.get("messages") or [])[1:][-6:])
+        trs = []
+        for m in models:
+            r = per.get(m)
+            if not r:
+                continue
+            j = r.get("judge_score") or {}
+            jtxt = "·".join(str(j[k]) for k in j if k not in ("comment", "error")) if j and "error" not in j else "–"
+            trs.append([names.get(m, m), r.get("response") or r.get("error") or "", html.unescape(_fmt(r.get("ttft_ms"), 0)),
+                        html.unescape(_fmt(r.get("rule_total"), 2)), jtxt, ", ".join(r.get("rule_failed") or [])])
+        out.append(f"<details><summary><b>{html.escape(tid)}</b> [{html.escape(any_r.get('category', ''))}] "
+                   f"{html.escape(any_r.get('expected_behavior') or '')}</summary>\n\n{convo}\n\n"
+                   + _md_table(["Model", "返答", "TTFT ms", "rule", "judge", "失敗ルール"], trs) + "\n\n</details>")
+    return "\n\n".join(out)
+
+
 def build_report(run_dir: Path, cfg: dict[str, Any], models: dict[str, dict[str, Any]]) -> Path:
     rows, perf, res, meta = load_run(run_dir)
     out = Path(cfg.get("output", {}).get("reports_dir", "reports"))
@@ -336,4 +406,23 @@ judge {html.escape(str((meta.get('judge') or {}).get('model', 'off')))}</div>
 <h2>同じ会話への各モデルの返答（横並び比較）</h2>{comparison_html(rows, names)}
 </main></body></html>"""
     (out / "report.html").write_text(doc, encoding="utf-8")
+
+    rank_md = [f"**{t}**: " + (" / ".join(f"{x['rank']}. {x['model']} ({x['value']})" for x in lst[:3]) or "–")
+               for t, lst in ranks.items()]
+    md_doc = "\n".join([
+        f"# NPC LLM Bench — {run_dir.name}", "",
+        f"{meta.get('timestamp', '')} · GPU {gpus} · driver {sysinfo.get('driver_version')} · "
+        f"CUDA {sysinfo.get('cuda_driver_api')} · sampling `{json.dumps(meta.get('sampling', {}))}` · seed {meta.get('seed')} · "
+        f"judge {(meta.get('judge') or {}).get('model', 'off')}", "",
+        "## Rankings (top 3)", "", *[f"- {x}" for x in rank_md], "",
+        "全順位は [rankings.md](rankings.md)。", "",
+        "## Summary", "", summary_md(s) if not s.empty else "no data", "",
+        "品質系の列は0-100。Halluc.%は「禁止事実の断定・嘘の前提への同意」の割合。"
+        "速度は perf(同時実行1) の計測、無い場合は品質テスト時の計測。", "",
+        "## Charts", "", *[f"![{k}]({p.name})\n" for k, p in charts.items()],
+        "## カテゴリ別ルールスコア (0-100)", "", category_md(cat, names), "",
+        "## 同時実行スケーリング", "", concurrency_md(perf_df, names), "",
+        "## 同じ会話への各モデルの返答（横並び比較）", "", comparison_md(rows, names), "",
+    ])
+    (out / "report.md").write_text(md_doc, encoding="utf-8")
     return out
