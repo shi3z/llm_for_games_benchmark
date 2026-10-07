@@ -10,3 +10,4 @@ reports/*
 !results/all_models_v2/
 !reports/all_models_v2/
 results/all_models_v2/progress.json
+!results/embedding/

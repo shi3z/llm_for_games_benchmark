@@ -1,0 +1,40 @@
+# 埋め込みモデル用: NPCの記憶検索（RAG）。characters.yaml の known_facts / unknown_facts / memories / relationships を
+# コーパスとし、プレイヤーの発話から該当する1件を引けるかを見る。gold は {character, 部分一致する文字列}。
+# unknown_facts が gold のものは「その話題は知らない」と判断する材料を引けるか、の確認。
+category: embedding_retrieval
+queries:
+  - {id: er_001, character: mika, user: 昨日の夜、店に来てた奴らは何者？, gold: Helios社の社員が二人}
+  - {id: er_002, character: mika, user: 帳簿ってどこにしまってあるの？, gold: 金庫に隠している}
+  - {id: er_003, character: mika, user: 水が足りなくなってきたよな, gold: 水の配給が週に一度減らされた}
+  - {id: er_004, character: mika, user: 街の噂に詳しい人を紹介してくれない？, gold: 情報屋のリン}
+  - {id: er_005, character: mika, user: 貸した金のことは覚えてるか？, gold: 1万クレジットを貸した}
+  - {id: er_006, character: mika, user: Mayaって女性を探してるんだ。どこにいる？, gold: Mayaの居場所}
+  - {id: er_007, character: kurosawa, user: 行方不明事件は何件起きてる？, gold: 三人が失踪}
+  - {id: er_008, character: kurosawa, user: いなくなった人の中に会社関係者はいた？, gold: 元Helios社の技術者}
+  - {id: er_009, character: kurosawa, user: なぜ捜査をやめたんだ？, gold: 捜査を打ち切るよう命じられた}
+  - {id: er_010, character: kurosawa, user: 俺のこと前にも調べたよな？, gold: カイを職務質問した}
+  - {id: er_011, character: gen, user: 最近このバーに偉い人は来る？, gold: 重役たちが店でよく祝杯}
+  - {id: er_012, character: gen, user: 上の街でも水は節約してるの？, gold: 水の配給制限は行われていない}
+  - {id: er_013, character: gen, user: 下の酒場の店員と知り合いなのか？, gold: ミカとは昔からの知り合い}
+  - {id: er_014, character: gen, user: 昔は船に乗ってたって本当？, gold: 十年前に地球から火星に移住}
+  - {id: er_015, character: gen, user: 地下に秘密の施設があるって聞いたけど, gold: 地下研究所の存在}
+  - {id: er_016, character: yui, user: お姉さんは何の仕事をしてたの？, gold: Helios社の研究者だった}
+  - {id: er_017, character: yui, user: 最後に連絡があったのはいつ？, gold: 二週間前から連絡が取れない}
+  - {id: er_018, character: yui, user: お姉さんから最後に届いた言葉は？, gold: 赤い砂で待って}
+  - {id: er_019, character: yui, user: 子供の頃の思い出ってある？, gold: 地球の海の映像}
+  - {id: er_020, character: yui, user: お姉さんは今どこで何をしてる？, gold: マヤの現在の居場所}
+  - {id: er_021, character: saeki, user: 水の配給について会社はどうするつもりだ？, gold: 水配給削減計画}
+  - {id: er_022, character: saeki, user: 昨夜、部下を下層に行かせたのはあなたですか？, gold: 部下二人を下層区の酒場に送った}
+  - {id: er_023, character: saeki, user: 警察に圧力をかけましたか？, gold: 捜査打ち切りを働きかけた}
+  - {id: er_024, character: saeki, user: 昔はどこの出身なんですか？, gold: 下層区から這い上がった}
+  - {id: er_025, character: tetsu, user: 換気設備はちゃんと動いてる？, gold: 第三換気塔}
+  - {id: er_026, character: tetsu, user: フィルターの部品はどこで買える？, gold: 闇市でしか手に入らない}
+  - {id: er_027, character: tetsu, user: 俺のバイクはいつ直る？, gold: エンジンを修理中}
+  - {id: er_028, character: tetsu, user: 修理代はもう払ったっけ？, gold: 3000クレジット}
+  - {id: er_029, character: tetsu, user: ドームを作った頃の話を聞かせてよ, gold: ドーム建設に携わった}
+  - {id: er_030, character: rin, user: 企業は最近何か動いてるのか？, gold: 下層区で人を雇おうとしている}
+  - {id: er_031, character: rin, user: 警察で動いてる人はいる？, gold: 黒沢が失踪事件を調べている}
+  - {id: er_032, character: rin, user: 酸素フィルター、高くなってない？, gold: 値段が二倍になった}
+  - {id: er_033, character: rin, user: 前に教えてもらった場所の代金はいくらだった？, gold: 500クレジット}
+  - {id: er_034, character: rin, user: Helios社は地下で何を研究してる？, gold: 何の研究をしているか}
+  - {id: er_035, character: rin, user: ミカのことどう思ってる？, gold: ミカ}
