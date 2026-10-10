@@ -29,8 +29,13 @@ def gpu_inventory() -> list[dict[str, Any]]:
     for i in range(pynvml.nvmlDeviceGetCount()):
         h = pynvml.nvmlDeviceGetHandleByIndex(i)
         name = pynvml.nvmlDeviceGetName(h)
+        mem_mb = None
+        try:
+            mem_mb = pynvml.nvmlDeviceGetMemoryInfo(h).total / 2**20
+        except Exception:
+            pass
         out.append({"index": i, "name": name.decode() if isinstance(name, bytes) else name,
-                    "memory_total_mb": pynvml.nvmlDeviceGetMemoryInfo(h).total / 2**20})
+                    "memory_total_mb": mem_mb})
     return out
 
 
@@ -93,7 +98,13 @@ class ResourceMonitor:
         self.util: list[float] = []
 
     def device_used_mb(self) -> float:
-        return sum(pynvml.nvmlDeviceGetMemoryInfo(h).used / 2**20 for h in self.handles) if self.handles else 0.0
+        total = 0.0
+        for h in self.handles:
+            try:
+                total += pynvml.nvmlDeviceGetMemoryInfo(h).used / 2**20
+            except Exception:
+                pass
+        return total
 
     def _sample(self) -> None:
         pids = _matching_pids(self.process_match, self.pids)

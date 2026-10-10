@@ -1,0 +1,374 @@
+{
+  "run_id": "gemma4_bench",
+  "timestamp": "2026-10-10T00:04:31.864934",
+  "mode": "both",
+  "argv": [
+    "benchmark.py",
+    "--models",
+    "gemma4-e4b-q4km,gemma4-12b-q4km",
+    "--mode",
+    "both",
+    "--scenario",
+    "all",
+    "--runs",
+    "3",
+    "--concurrency",
+    "1,2,4,8,16",
+    "--no-judge",
+    "--run-id",
+    "gemma4_bench"
+  ],
+  "sampling": {
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 128
+  },
+  "seed": 1234,
+  "history_mode": "messages",
+  "npc_system_prompt": "あなたはゲーム世界の登場人物です。\n次に与えられる情報は、この人物が現在知っている事実だけです。\n記載されていない情報を勝手に知ったことにしてはいけません。\nプレイヤーが嘘や推測を述べた場合、それを事実として受け入れてはいけません。\n設定された人格、口調、感情、現在状態を維持してください。\nあなたはAIアシスタントではありません。\n説明役でもありません。\nゲーム世界の人物として、自然な日本語で短く返答してください。\n原則1〜3文で答えてください。\n台詞だけを出力し、ト書きや括弧書きの動作描写は書かないでください。\n",
+  "npc_system_prompt_sha": "69093046519fb25e",
+  "scenarios": [
+    "character_diff",
+    "injection",
+    "knowledge_boundary",
+    "long_dialogue",
+    "memory",
+    "personality",
+    "short_dialogue",
+    "state"
+  ],
+  "n_tests": 73,
+  "quality_runs": 3,
+  "concurrency": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "system": {
+    "gpus": [
+      {
+        "index": 0,
+        "name": "NVIDIA GB10",
+        "memory_total_mb": null
+      }
+    ],
+    "driver_version": "580.159.03",
+    "cuda_driver_api": "13.0",
+    "nvcc": "Build cuda_13.0.r13.0/compiler.36424714_0",
+    "cpu": 20,
+    "ram_total_gb": 121.62711334228516
+  },
+  "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "platform": "Linux-6.17.0-1021-nvidia-aarch64-with-glibc2.39",
+  "scenario_sha": {
+    "character_diff.yaml": "8ac1b5fec558d9a2",
+    "characters.yaml": "c6caae8c1f0c9a36",
+    "embedding_retrieval.yaml": "b8ae2b6f2baa8e7a",
+    "injection.yaml": "5372679dcd45fd22",
+    "knowledge_boundary.yaml": "c0ab36428e29142a",
+    "long_dialogue.yaml": "098b87b9ad971687",
+    "memory.yaml": "b1ec1588745c7481",
+    "personality.yaml": "1cbec469e3f951c4",
+    "short_dialogue.yaml": "0508cbb4051244d5",
+    "state.yaml": "43db9f67a781a8f0"
+  },
+  "config": {
+    "seed": 1234,
+    "scenario_dir": "scenarios",
+    "request_timeout": 300,
+    "monitor_interval": 0.2,
+    "gpu_indices": null,
+    "gpu_hygiene": {
+      "unload_ollama_before_launch": true,
+      "ollama_url": "http://localhost:11434"
+    },
+    "history_mode": "messages",
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.9,
+      "max_tokens": 128
+    },
+    "quality": {
+      "runs": 1,
+      "warmup": 3
+    },
+    "perf": {
+      "runs": 30,
+      "warmup": 3,
+      "concurrency": [
+        1
+      ],
+      "min_rounds_per_worker": 3,
+      "test_ids": [
+        "short_001",
+        "knowledge_boundary_001",
+        "memory_001",
+        "personality_001",
+        "state_001"
+      ]
+    },
+    "npc_system_prompt": "あなたはゲーム世界の登場人物です。\n次に与えられる情報は、この人物が現在知っている事実だけです。\n記載されていない情報を勝手に知ったことにしてはいけません。\nプレイヤーが嘘や推測を述べた場合、それを事実として受け入れてはいけません。\n設定された人格、口調、感情、現在状態を維持してください。\nあなたはAIアシスタントではありません。\n説明役でもありません。\nゲーム世界の人物として、自然な日本語で短く返答してください。\n原則1〜3文で答えてください。\n台詞だけを出力し、ト書きや括弧書きの動作描写は書かないでください。\n",
+    "rules": {
+      "max_chars": 120,
+      "max_sentences": 4,
+      "repetition_threshold": 0.35,
+      "latin_allowlist": [
+        "Helios",
+        "Maya"
+      ]
+    },
+    "rule_weights": {
+      "hallucination": 1.0,
+      "identity_failure": 1.0,
+      "ai_leak": 1.0,
+      "format_failure": 1.0,
+      "meta_leak": 0.8,
+      "missing_required": 0.6,
+      "language_mix": 0.6,
+      "verbosity": 0.4,
+      "ai_tone": 0.4,
+      "excess_politeness": 0.3,
+      "repetition": 0.4,
+      "missing_uncertainty": 0.4,
+      "state_not_reflected": 0.3,
+      "stage_direction": 0.15,
+      "wrong_pronoun": 0.15,
+      "truncated": 0.2
+    },
+    "judge": {
+      "enabled": false,
+      "backend": "ollama",
+      "base_url": "http://localhost:11434",
+      "model": "gpt-oss:20b",
+      "think": "low",
+      "temperature": 0.0,
+      "max_tokens": 2048,
+      "concurrency": 4,
+      "retries": 2,
+      "max_runs": 2
+    },
+    "judge_blend": 0.6,
+    "quality_weights": {
+      "japanese": 0.2,
+      "character": 0.2,
+      "knowledge": 0.25,
+      "emotion": 0.1,
+      "long_conversation": 0.15,
+      "distinctiveness": 0.1
+    },
+    "npc_score_weights": {
+      "quality": 0.55,
+      "latency": 0.2,
+      "throughput": 0.15,
+      "memory_efficiency": 0.1
+    },
+    "scoring": {
+      "ttft_good_ms": 150,
+      "ttft_bad_ms": 1500,
+      "latency_good_ms": 600,
+      "latency_bad_ms": 4000,
+      "tok_s_good": 100,
+      "tok_s_bad": 10,
+      "rps_good": 8,
+      "rps_bad": 0.3,
+      "vram_good_gb": 6,
+      "vram_bad_gb": 24
+    },
+    "output": {
+      "results_dir": "results",
+      "reports_dir": "reports",
+      "save_full_long_history": false
+    }
+  },
+  "models": {
+    "gemma4-e4b-q4km": {
+      "display_name": "Gemma4-E4B-it (Q4_K_M, Ollama)",
+      "backend": "ollama",
+      "base_url": "http://localhost:11434",
+      "model": "gemma4:e4b",
+      "params": "4.5B",
+      "quantization": "Q4_K_M",
+      "family": "gemma4",
+      "disable_thinking": true,
+      "options": {
+        "num_ctx": 8192
+      },
+      "process_match": [
+        "ollama",
+        "llama-server"
+      ],
+      "id": "gemma4-e4b-q4km",
+      "server": {
+        "backend": "ollama",
+        "base_url": "http://localhost:11434",
+        "backend_version": "0.32.0",
+        "model_digest": "dc35e8d9c6061baa6f0fa870975ab6932e2542b579b13ea0f199fa4bb7300c9c",
+        "model_details": {
+          "parent_model": "gemma4-validation-20260929:e4b-imatrix-attention-q6-q8-draft2",
+          "format": "gguf",
+          "family": "gemma4",
+          "families": [
+            "gemma4"
+          ],
+          "parameter_size": "7.5B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 131072,
+          "embedding_length": 2560
+        },
+        "model_info": {
+          "gemma4.attention.head_count": 8,
+          "gemma4.attention.head_count_kv": 2,
+          "gemma4.attention.key_length": 512,
+          "gemma4.attention.key_length_swa": 256,
+          "gemma4.attention.layer_norm_rms_epsilon": 1e-06,
+          "gemma4.attention.shared_kv_layers": 18,
+          "gemma4.attention.sliding_window": 512,
+          "gemma4.attention.sliding_window_pattern": null,
+          "gemma4.attention.value_length": 512,
+          "gemma4.attention.value_length_swa": 256,
+          "gemma4.block_count": 42,
+          "gemma4.context_length": 131072,
+          "gemma4.embedding_length": 2560,
+          "gemma4.embedding_length_per_layer_input": 256,
+          "gemma4.feed_forward_length": 10240,
+          "gemma4.final_logit_softcapping": 30,
+          "gemma4.rope.dimension_count": 512,
+          "gemma4.rope.dimension_count_swa": 256,
+          "gemma4.rope.freq_base": 1000000,
+          "gemma4.rope.freq_base_swa": 10000,
+          "general.architecture": "gemma4",
+          "general.base_model.0.name": "Gemma 4 E4B",
+          "general.base_model.0.organization": "Google",
+          "general.base_model.0.repo_url": "https://huggingface.co/google/gemma-4-E4B",
+          "general.base_model.count": 1,
+          "general.file_type": 15,
+          "general.license": "apache-2.0",
+          "general.license.link": "https://ai.google.dev/gemma/docs/gemma_4_license",
+          "general.parameter_count": 7518069290,
+          "general.quantization_version": 2,
+          "general.sampling.temp": 1,
+          "general.sampling.top_k": 64,
+          "general.sampling.top_p": 0.95,
+          "general.size_label": "7.5B",
+          "general.tags": null,
+          "general.type": "model",
+          "quantize.imatrix.chunks_count": 128,
+          "quantize.imatrix.dataset": "/Users/daniel/code/gemma4-publish-20260925/.cache/gemma4-040/perplexity-20260927/wikitext-2-raw/wiki.train.raw",
+          "quantize.imatrix.entries_count": 342,
+          "quantize.imatrix.file": "/Users/daniel/code/gemma4-publish-20260925/.cache/gemma4-040/imatrix-20260927-e4b/imatrix.gguf",
+          "tokenizer.ggml.add_bos_token": true,
+          "tokenizer.ggml.add_space_prefix": false,
+          "tokenizer.ggml.bos_token_id": 2,
+          "tokenizer.ggml.eos_token_id": 1,
+          "tokenizer.ggml.mask_token_id": 4,
+          "tokenizer.ggml.merges": null,
+          "tokenizer.ggml.model": "gemma4",
+          "tokenizer.ggml.padding_token_id": 0,
+          "tokenizer.ggml.scores": null,
+          "tokenizer.ggml.token_type": null,
+          "tokenizer.ggml.tokens": null,
+          "tokenizer.ggml.unknown_token_id": 3
+        },
+        "template_sha_head": "{{ .Prompt }}"
+      },
+      "revision": null,
+      "tokenizer_revision": null
+    },
+    "gemma4-12b-q4km": {
+      "display_name": "Gemma4-12B-it (Q4_K_M, Ollama)",
+      "backend": "ollama",
+      "base_url": "http://localhost:11434",
+      "model": "gemma4:12b",
+      "params": "12B",
+      "quantization": "Q4_K_M",
+      "family": "gemma4",
+      "disable_thinking": true,
+      "options": {
+        "num_ctx": 8192
+      },
+      "process_match": [
+        "ollama",
+        "llama-server"
+      ],
+      "id": "gemma4-12b-q4km",
+      "server": {
+        "backend": "ollama",
+        "base_url": "http://localhost:11434",
+        "backend_version": "0.32.0",
+        "model_digest": "6114515d63c17436a7c0417d82820ac65ad643e2806c5a3c89cb62846436ed0b",
+        "model_details": {
+          "parent_model": "imatrix-20260927-12b/model-q4_K_M.gguf",
+          "format": "gguf",
+          "family": "gemma4",
+          "families": [
+            "gemma4"
+          ],
+          "parameter_size": "11.9B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 3840
+        },
+        "model_info": {
+          "gemma4.attention.head_count": 16,
+          "gemma4.attention.head_count_kv": null,
+          "gemma4.attention.key_length": 512,
+          "gemma4.attention.key_length_swa": 256,
+          "gemma4.attention.layer_norm_rms_epsilon": 1e-06,
+          "gemma4.attention.shared_kv_layers": 0,
+          "gemma4.attention.sliding_window": 1024,
+          "gemma4.attention.sliding_window_pattern": null,
+          "gemma4.attention.value_length": 512,
+          "gemma4.attention.value_length_swa": 256,
+          "gemma4.block_count": 48,
+          "gemma4.context_length": 262144,
+          "gemma4.embedding_length": 3840,
+          "gemma4.embedding_length_per_layer_input": 0,
+          "gemma4.feed_forward_length": 15360,
+          "gemma4.final_logit_softcapping": 30,
+          "gemma4.rope.dimension_count": 512,
+          "gemma4.rope.dimension_count_swa": 256,
+          "gemma4.rope.freq_base": 1000000,
+          "gemma4.rope.freq_base_swa": 10000,
+          "general.architecture": "gemma4",
+          "general.base_model.0.name": "Gemma 4 12B",
+          "general.base_model.0.organization": "Google",
+          "general.base_model.0.repo_url": "https://huggingface.co/google/gemma-4-12B",
+          "general.base_model.count": 1,
+          "general.file_type": 15,
+          "general.license": "apache-2.0",
+          "general.license.link": "https://ai.google.dev/gemma/docs/gemma_4_license",
+          "general.parameter_count": 11907350576,
+          "general.quantization_version": 2,
+          "general.sampling.temp": 1,
+          "general.sampling.top_k": 64,
+          "general.sampling.top_p": 0.95,
+          "general.size_label": "12B",
+          "general.tags": null,
+          "general.type": "model",
+          "quantize.imatrix.chunks_count": 128,
+          "quantize.imatrix.dataset": "/Users/daniel/code/gemma4-publish-20260925/.cache/gemma4-040/perplexity-20260927/wikitext-2-raw/wiki.train.raw",
+          "quantize.imatrix.entries_count": 328,
+          "quantize.imatrix.file": "/Users/daniel/code/gemma4-publish-20260925/.cache/gemma4-040/imatrix-20260927-12b/imatrix.gguf",
+          "tokenizer.ggml.add_bos_token": true,
+          "tokenizer.ggml.add_space_prefix": false,
+          "tokenizer.ggml.bos_token_id": 2,
+          "tokenizer.ggml.eos_token_id": 1,
+          "tokenizer.ggml.mask_token_id": 4,
+          "tokenizer.ggml.merges": null,
+          "tokenizer.ggml.model": "gemma4",
+          "tokenizer.ggml.padding_token_id": 0,
+          "tokenizer.ggml.scores": null,
+          "tokenizer.ggml.suppress_tokens": null,
+          "tokenizer.ggml.token_type": null,
+          "tokenizer.ggml.tokens": null,
+          "tokenizer.ggml.unknown_token_id": 3
+        },
+        "template_sha_head": "{{ .Prompt }}"
+      },
+      "revision": null,
+      "tokenizer_revision": null
+    }
+  }
+}

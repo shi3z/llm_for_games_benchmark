@@ -10,4 +10,7 @@ reports/*
 !results/all_models_v2/
 !reports/all_models_v2/
 results/all_models_v2/progress.json
+!results/gemma4_bench/
+!reports/gemma4_bench/
+results/gemma4_bench/progress.json
 !results/embedding/

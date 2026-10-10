@@ -50,6 +50,30 @@ models:
     options: {num_ctx: 8192}
     process_match: ["ollama"]
 
+  gemma4-e4b-q4km:
+    display_name: Gemma4-E4B-it (Q4_K_M, Ollama)
+    backend: ollama
+    base_url: http://localhost:11434
+    model: gemma4:e4b
+    params: 4.5B
+    quantization: Q4_K_M
+    family: gemma4
+    disable_thinking: true
+    options: {num_ctx: 8192}
+    process_match: ["ollama", "llama-server"]
+
+  gemma4-12b-q4km:
+    display_name: Gemma4-12B-it (Q4_K_M, Ollama)
+    backend: ollama
+    base_url: http://localhost:11434
+    model: gemma4:12b
+    params: 12B
+    quantization: Q4_K_M
+    family: gemma4
+    disable_thinking: true
+    options: {num_ctx: 8192}
+    process_match: ["ollama", "llama-server"]
+
   # ---------------- vLLM (benchmark starts the server) ----------------
   qwen3-8b-awq-vllm:
     display_name: Qwen3-8B (AWQ, vLLM)

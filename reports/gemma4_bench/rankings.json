@@ -1,0 +1,86 @@
+{
+  "Best Quality": [
+    {
+      "rank": 1,
+      "model": "Gemma4-12B-it (Q4_K_M, Ollama)",
+      "value": 0.9371
+    },
+    {
+      "rank": 2,
+      "model": "Gemma4-E4B-it (Q4_K_M, Ollama)",
+      "value": 0.9212
+    }
+  ],
+  "Best Latency (TTFT p50)": [
+    {
+      "rank": 1,
+      "model": "Gemma4-E4B-it (Q4_K_M, Ollama)",
+      "value": 435.85
+    },
+    {
+      "rank": 2,
+      "model": "Gemma4-12B-it (Q4_K_M, Ollama)",
+      "value": 606.5
+    }
+  ],
+  "Best Japanese": [
+    {
+      "rank": 1,
+      "model": "Gemma4-E4B-it (Q4_K_M, Ollama)",
+      "value": 0.9201
+    },
+    {
+      "rank": 2,
+      "model": "Gemma4-12B-it (Q4_K_M, Ollama)",
+      "value": 0.8871
+    }
+  ],
+  "Best Character Consistency": [
+    {
+      "rank": 1,
+      "model": "Gemma4-E4B-it (Q4_K_M, Ollama)",
+      "value": 0.9551
+    },
+    {
+      "rank": 2,
+      "model": "Gemma4-12B-it (Q4_K_M, Ollama)",
+      "value": 0.9401
+    }
+  ],
+  "Lowest Hallucination": [
+    {
+      "rank": 1,
+      "model": "Gemma4-E4B-it (Q4_K_M, Ollama)",
+      "value": 0.0115
+    },
+    {
+      "rank": 2,
+      "model": "Gemma4-12B-it (Q4_K_M, Ollama)",
+      "value": 0.023
+    }
+  ],
+  "Best VRAM Efficiency (quality / GB)": [
+    {
+      "rank": 1,
+      "model": "Gemma4-E4B-it (Q4_K_M, Ollama)",
+      "value": 0.1886
+    },
+    {
+      "rank": 2,
+      "model": "Gemma4-12B-it (Q4_K_M, Ollama)",
+      "value": 0.1044
+    }
+  ],
+  "Best Overall NPC Model": [
+    {
+      "rank": 1,
+      "model": "Gemma4-E4B-it (Q4_K_M, Ollama)",
+      "value": 82.7902
+    },
+    {
+      "rank": 2,
+      "model": "Gemma4-12B-it (Q4_K_M, Ollama)",
+      "value": 74.9809
+    }
+  ]
+}
