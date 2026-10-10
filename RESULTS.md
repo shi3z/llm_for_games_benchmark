@@ -2,7 +2,7 @@
 
 日本語ゲームNPC用途で、7B〜14Bクラスを中心にローカルLLM 11設定（および最新世代の Gemma 4 E4B / 12B）を比較した結果です。
 詳細なレポート（グラフ・同時実行スケーリング・同じ会話への全モデルの返答の横並び比較）は GitHub 上でそのまま読める [reports/all_models_v2/report.md](reports/all_models_v2/report.md)（HTML版: [report.html](reports/all_models_v2/report.html)）、
-全試行の生データは [results/all_models_v2/rows.jsonl](results/all_models_v2/rows.jsonl) にあります（Gemma 4 単独レポートは [reports/gemma4_bench/report.md](reports/gemma4_bench/report.md)）。
+全試行の生データは [results/all_models_v2/rows.jsonl](results/all_models_v2/rows.jsonl) にあります。
 
 ## 条件
 
@@ -63,7 +63,9 @@
 - **VRAMはサーバーの確保量**。vLLMは `--gpu-memory-utilization` 分、llama.cppは `-c` 分のKVキャッシュを含む。このためvLLMのFP8/BF16モデルはメモリ効率で不利になりNPC Scoreが下がっている（重みは `config.yaml: npc_score_weights` で変更可）。
 - Qwen3-14B FP8 は空きVRAMの都合で `--max-model-len 4096`（テストの最長プロンプトは約2,800トークン）、また古いnvccでFlashInferのJITが通らないため `--attention-backend TRITON_ATTN`。
 - ルールベース評価は正規表現。検証中に見つかった誤検出（日本語と共通の漢字を簡体字扱い、JSONキーや作中固有名詞の英字、「〜てない」形の否定、オウム返し）を修正し、全行を `--rescore` で同じルールで再採点済み。
-- Judge（gpt-oss:20b）は全体に甘め（明確なでっち上げにも高得点をつける例あり）。
+- Judge（gpt-oss:20b）は全体に甘め（明確なでっち上げにも高得点をつける例あり）。Gemma 4 の評価はルールベース採点（全試行）をベースとしています。
+- **Gemma 4 の計測環境**: Gemma 4 E4B / 12B は NVIDIA GB10（DGX Spark、統一メモリ）で計測しています。GPUアーキテクチャおよび Ollama の設定が異なるため、RTX 4090 で計測した他モデルとTTFT・tok/sなどの速度指標を直接横並び比較する際は留意してください。
+- **Gemma 5 について**: 2026年10月現在、Google から未発表・未リリースのため本検証の対象外です（Gemma 4 が最新世代）。
 
 ---
 
@@ -136,53 +138,4 @@ python embed_bench.py --model google/embeddinggemma-2 --text-only --out results/
 - 手動ラベルは35クエリと小さく、1件の差が約3ポイントです。次元間や構成間の小差は誤差の範囲です。
 - 比較対象の埋め込みモデルは入れていません。`google/embeddinggemma-300m` はゲート付きで、この環境では認証がなく取得できませんでした。このため「他より良い／悪い」とは言えません。
 - 速度はGB10（統一メモリ）の値で、4090とは比較できません。
-- `tobestyledintro/qwen3.8-9b-distill` は生成モデルなので上の本編に含まれています（10位、NPC Score 82.1）。
-
----
-
-# Gemma 4 ファミリーの検証: Gemma 4 E4B & Gemma 4 12B（2026-10-10）
-
-2026年にリリースされた Google DeepMind の新世代オープンモデル **Gemma 4** から、エッジ向け軽量モデル **Gemma 4 E4B**（実質4.5B）と、中型モデル **Gemma 4 12B** を日本語ゲームNPC用途で評価しました。
-
-詳細なレポートは [reports/gemma4_bench/report.md](reports/gemma4_bench/report.md)（HTML版: [report.html](reports/gemma4_bench/report.html)）、全試行の生データは [results/gemma4_bench/rows.jsonl](results/gemma4_bench/rows.jsonl) にあります。
-
-※ **Gemma 5 について**: 2026年10月現在、未発表・未リリースのため今回の評価対象外です。
-
-## 条件
-
-- GPU: NVIDIA GB10（DGX Spark、統一メモリ 128GB）
-- バックエンド: Ollama 0.32.0 (llama-server 内部エンジン)
-- サンプリング: temperature 0.7 / top_p 0.9 / max_tokens 128、seed固定、思考モードOFF (`disable_thinking: true`)
-- 品質: 全73テスト × 3回（各363生成、ルールベース評価）
-- 負荷: 同時実行 1 / 2 / 4 / 8 / 16、各30〜48リクエスト
-- 速度系の値は perf（同時実行1）の計測値（統一メモリ環境のため、4090での計測値とは直接比較できません）
-
-## 結果
-
-| # | モデル | 品質 | 日本語 | キャラ | 知識 | Halluc. | 長期会話 | TTFT p50/p95 (ms) | tok/s | 最大req/s | VRAM GB | NPC Score |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | Gemma 4 E4B (Q4_K_M, Ollama) | 92.1 | 92.0 | 95.5 | 95.4 | **1.1%** | 94.5 | 436 / 526 | 62.1 | 2.26 | 4.89 | **82.8** |
-| 2 | Gemma 4 12B (Q4_K_M, Ollama) | **93.7** | 88.7 | 94.0 | **96.6** | 2.3% | 94.5 | 607 / 779 | 38.1 | 1.05 | 8.98 | **75.0** |
-
-※ NPC Score は品質・遅延・スループット・メモリ効率の重み付き総合点です。E4Bは軽量・低遅延・高スループットにより総合スコアで12Bを上回っています。
-
-## ランキング
-
-| 部門 | 1位 | 2位 |
-|---|---|---|
-| Best Quality | Gemma 4 12B (93.7) | Gemma 4 E4B (92.1) |
-| Best Latency (TTFT p50) | Gemma 4 E4B (436 ms) | Gemma 4 12B (607 ms) |
-| Best Japanese | Gemma 4 E4B (92.0) | Gemma 4 12B (88.7) |
-| Best Character Consistency | Gemma 4 E4B (95.5) | Gemma 4 12B (94.0) |
-| Lowest Hallucination | Gemma 4 E4B (1.1%) | Gemma 4 12B (2.3%) |
-| Best VRAM Efficiency (quality / GB) | Gemma 4 E4B (0.1886) | Gemma 4 12B (0.1044) |
-| Best Overall NPC Model | Gemma 4 E4B (82.8) | Gemma 4 12B (75.0) |
-
-## 所見
-
-- **Gemma 4 12Bの卓越した品質**: 品質スコア **93.7**、知識整合性 **96.6%**、長期会話維持 **94.5%** と、前世代や同クラスモデルを大きく上回る極めて高い設定維持力と会話能力を示しました。
-- **Gemma 4 E4Bの驚異的なハルシネーション耐性とキャラ維持**: 4.5Bクラスという軽量モデルでありながら、禁止事実への違反（ハルシネーション率）はわずか **1.1%**（全テスト中最少水準）。キャラ一貫性も **95.5%** と12Bを僅かに上回り、日常会話・インジェクション耐性ともに極めて安定しています。
-- **Gemma 3からの劇的な世代間進化**:
-  - 前世代の Gemma 3 4B-it（品質 82.0、ハルシネーション率 9.0%、キャラ一貫性 84.2%）と比較すると、Gemma 4 E4B は品質が **+10.1 ポイント向上**、ハルシネーション率は **約1/8に激減**（9.0% → 1.1%）しており、アーキテクチャ刷新による劇的な進化が確認されました。
-- **ローカルNPC用途としての実用性**:
-  - E4Bは VRAM 約 4.9 GB と非常に軽量でありながら、一般的な 7B〜14B クラスを凌駕する会話一貫性を発揮します。家庭用GPUやエッジ端末でのゲームNPC組み込み用途として極めて有望な選択肢です。
+- `tobestyledintro/qwen3.8-9b-distill` は生成モデルなので上の本編に含まれています（11位、NPC Score 82.1）。

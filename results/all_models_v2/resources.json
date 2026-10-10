@@ -139,5 +139,35 @@
     "vram_peak_mb": 8250.0,
     "vram_method": "process",
     "ram_method": "process_rss"
+  },
+  "gemma4-e4b-q4km": {
+    "device_peak_mb": 0.0,
+    "device_baseline_mb": 0.0,
+    "device_delta_mb": 0.0,
+    "process_gpu_peak_mb": 5002.609375,
+    "ram_peak_mb": 5774.125,
+    "gpu_util_mean": 49.49948132780083,
+    "gpu_util_max": 96,
+    "server_vram_mb": 351.979998588562,
+    "server_size_mb": 351.979998588562,
+    "context_length": 8192,
+    "vram_peak_mb": 5002.609375,
+    "vram_method": "process",
+    "ram_method": "process_rss"
+  },
+  "gemma4-12b-q4km": {
+    "device_peak_mb": 0.0,
+    "device_baseline_mb": 0.0,
+    "device_delta_mb": 0.0,
+    "process_gpu_peak_mb": 9194.921875,
+    "ram_peak_mb": 7532.53515625,
+    "gpu_util_mean": 65.22501514233798,
+    "gpu_util_max": 96,
+    "server_vram_mb": 1273.1199989318848,
+    "server_size_mb": 1273.1199989318848,
+    "context_length": 8192,
+    "vram_peak_mb": 9194.921875,
+    "vram_method": "process",
+    "ram_method": "process_rss"
   }
 }
